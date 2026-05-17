@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MedSync</title>
+    <style>
+      :root {
+        color: #1f2933;
+        background: #f5f7fa;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      main {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 48px 20px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        color: #0f766e;
+        font-size: 40px;
+      }
+
+      h2 {
+        margin-top: 32px;
+        color: #334155;
+      }
+
+      p,
+      li {
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      code {
+        background: #e2e8f0;
+        border-radius: 4px;
+        padding: 3px 6px;
+      }
+
+      .panel {
+        border-left: 5px solid #0f766e;
+        background: #ffffff;
+        padding: 18px 22px;
+        box-shadow: 0 8px 20px rgb(15 23 42 / 8%);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>MedSync</h1>
+      <p>
+        Aplicacao CLI para organizar horarios de medicamentos e consultar
+        enderecos de entrega ou retirada usando a API publica ViaCEP.
+      </p>
+
+      <section class="panel">
+        <h2>Entrega intermediaria</h2>
+        <p>
+          A nova versao consome uma API REST externa, valida o fluxo com testes
+          automatizados e documenta como executar o projeto.
+        </p>
+      </section>
+
+      <h2>Como executar</h2>
+      <ol>
+        <li>Instale as dependencias com <code>pip install -r requirements.txt</code>.</li>
+        <li>Rode a aplicacao com <code>python src/main.py</code>.</li>
+        <li>Use a opcao de CEP para buscar um endereco no ViaCEP.</li>
+      </ol>
+
+      <h2>Qualidade</h2>
+      <p>
+        Os testes rodam com <code>python -m pytest</code> e o lint com
+        <code>python -m ruff check .</code>.
+      </p>
+    </main>
+  </body>
+</html>
