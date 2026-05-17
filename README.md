@@ -1,16 +1,17 @@
 # MedSync
 ![CI](https://github.com/HeberMacedo/medsync/actions/workflows/main.yml/badge.svg)
 
-**Deploy:** https://hebermacedo.github.io/medsync/
+**Deploy da aplicacao web:** https://hebermacedo.github.io/medsync/
 
 Este e o meu projeto para o BootCamp. Criei o **MedSync** para ajudar no controle de medicamentos, pensando principalmente em idosos ou pessoas que tomam muitos remedios e acabam esquecendo os horarios.
 
-E uma ferramenta simples que roda direto no terminal (CLI), mas que foca na organizacao e na seguranca dos dados. Na entrega intermediaria, o projeto passou a consultar a API publica **ViaCEP** para buscar enderecos por CEP e apoiar entregas ou retiradas de medicamentos.
+E uma ferramenta simples que roda no terminal (CLI), mas que foca na organizacao e na seguranca dos dados. Na entrega intermediaria, o projeto tambem ganhou uma versao web publicada no GitHub Pages, permitindo que o avaliador use o sistema diretamente pelo navegador. A aplicacao consulta a API publica **ViaCEP** para buscar enderecos por CEP e apoiar entregas ou retiradas de medicamentos.
 
 ## O que o programa faz:
 * Cadastra o nome do remedio e o horario que deve ser tomado.
 * Lista todos os agendamentos salvos para consulta rapida.
 * Consulta um endereco por CEP usando a API publica ViaCEP.
+* Disponibiliza uma versao web para uso pelo link de deploy.
 * Valida as entradas (nao deixa salvar se os campos estiverem vazios).
 
 ## Tecnologias que usei:
