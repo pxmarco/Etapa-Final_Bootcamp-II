@@ -1,28 +1,55 @@
 # MedSync
 ![CI](https://github.com/HeberMacedo/medsync/actions/workflows/main.yml/badge.svg)
 
-Este é o meu projeto para o BootCamp. Criei o **MedSync** para ajudar no controle de medicamentos, pensando principalmente em idosos ou pessoas que tomam muitos remédios e acabam esquecendo os horários. 
+Deploy: https://hebermacedo.github.io/medsync/
 
-É uma ferramenta simples que roda direto no terminal (CLI), mas que foca na organização e na segurança dos dados.
+Este e o meu projeto do BootCamp. A ideia do MedSync e ajudar no controle de remedios, principalmente para quem toma varios medicamentos no dia e pode acabar esquecendo algum horario.
 
-## O que o programa faz:
-* Cadastra o nome do remédio e o horário que deve ser tomado.
-* Lista todos os agendamentos salvos para consulta rápida.
-* Valida as entradas (não deixa salvar se os campos estiverem vazios).
+Nesta entrega intermediaria eu mantive a versao em Python pelo terminal e tambem fiz uma versao web simples, para ficar mais facil testar pelo link do deploy.
 
-## Tecnologias que usei:
-Para o código usei **Python**. Além disso, configurei o **Pytest** para garantir que tudo funciona e o **Ruff** para manter o código limpo e padronizado. Também montei um **GitHub Actions** que roda esses testes sozinho toda vez que eu subo uma alteração.
+## O que da para fazer
 
-## Como rodar o projeto:
-1. Primeiro, baixe ou clone o repositório.
-2. Instale o que precisa com o comando: `pip install pytest ruff`
-3. O comando padrão para rodar é `python src/main.py`. Caso o ambiente Python não esteja no PATH do sistema, o projeto também pode ser executado facilmente abrindo o arquivo `main.py` no VS Code e clicando no botão **Run** (triângulo) no canto superior direito.
+* Cadastrar um remedio e o horario.
+* Ver a lista de remedios cadastrados.
+* Consultar um endereco pelo CEP usando a API ViaCEP.
+* Usar a versao web pelo navegador.
 
-## Testes e Qualidade:
-Eu configurei comandos simples para testar o código:
-* Para rodar os testes: `python -m pytest`
-* Para ver se o código está no padrão (Lint): `python -m ruff check .`
+## API usada
 
-**Versão:** 1.0.0  
-**Autor:** Heber Macedo
-**repositório:** `https://github.com/HeberMacedo/medsync`
+Usei a API publica ViaCEP para buscar endereco a partir de um CEP.
+
+Endpoint:
+
+`https://viacep.com.br/ws/{cep}/json/`
+
+No projeto, essa consulta serve para simular um endereco de entrega ou retirada de medicamento.
+
+## Como rodar no computador
+
+1. Clone ou baixe o repositorio.
+2. Instale as dependencias:
+
+`pip install -r requirements.txt`
+
+3. Rode o programa no terminal:
+
+`python src/main.py`
+
+Tambem da para abrir o arquivo `main.py` no VS Code e clicar em **Run**.
+
+## Testes
+
+Para rodar os testes:
+
+`python -m pytest`
+
+Para rodar o lint:
+
+`python -m ruff check .`
+
+## Links
+
+Repositorio: https://github.com/HeberMacedo/medsync  
+Deploy: https://hebermacedo.github.io/medsync/
+
+Autor: Heber Macedo
