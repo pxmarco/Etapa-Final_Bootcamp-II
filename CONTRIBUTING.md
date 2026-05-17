@@ -1,10 +1,8 @@
-# Como contribuir para o MedSync
+# Como contribuir
 
-Fico feliz com seu interesse em ajudar! 
+Este projeto foi feito para o BootCamp, mas deixei algumas orientacoes simples caso ele seja melhorado depois.
 
-Para contribuir:
-1. Faça um Fork do projeto.
-2. Crie uma branch para sua modificação.
-3. Envie um Pull Request detalhando o que foi melhorado (código ou testes).
-
-Toda ajuda para melhorar o controle de saúde é bem-vinda!
+1. Crie uma branch para a alteracao.
+2. Rode os testes com `python -m pytest`.
+3. Rode o lint com `python -m ruff check .`.
+4. Abra um Pull Request explicando o que foi mudado.

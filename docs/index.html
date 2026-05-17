@@ -268,11 +268,15 @@
 
         medications.forEach((medication) => {
           const item = document.createElement("article");
+          const name = document.createElement("strong");
+          const time = document.createElement("span");
+
           item.className = "item";
-          item.innerHTML = `
-            <strong>${medication.name}</strong>
-            <span>Horario: ${medication.time}</span>
-          `;
+          name.textContent = medication.name;
+          time.textContent = `Horario: ${medication.time}`;
+
+          item.appendChild(name);
+          item.appendChild(time);
           medicationList.appendChild(item);
         });
       }
@@ -338,11 +342,17 @@
             throw new Error("CEP nao encontrado.");
           }
 
-          addressResult.innerHTML = `
-            <strong>${data.logradouro || "Logradouro nao informado"}</strong><br>
-            Bairro: ${data.bairro || "Nao informado"}<br>
-            Cidade: ${data.localidade || "Nao informada"} - ${data.uf || ""}
-          `;
+          addressResult.replaceChildren();
+
+          const street = document.createElement("strong");
+          const neighborhood = document.createElement("div");
+          const city = document.createElement("div");
+
+          street.textContent = data.logradouro || "Logradouro nao informado";
+          neighborhood.textContent = `Bairro: ${data.bairro || "Nao informado"}`;
+          city.textContent = `Cidade: ${data.localidade || "Nao informada"} - ${data.uf || ""}`;
+
+          addressResult.append(street, neighborhood, city);
           setStatus(cepStatus, "Endereco encontrado com sucesso.", "success");
         } catch (error) {
           addressResult.textContent = "Nenhum endereco valido para exibir.";

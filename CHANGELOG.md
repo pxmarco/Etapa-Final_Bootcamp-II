@@ -1,12 +1,16 @@
-# Histórico de Mudanças (Changelog)
+# Changelog
 
-Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
+## 1.1.0 - Entrega intermediaria
 
-## [1.0.0] - 2026-04-02
-### Adicionado
-- Estrutura completa do projeto MedSync.
-- Sistema de cadastro e listagem de remédios via terminal (CLI).
-- Implementação de testes automatizados com Pytest.
-- Configuração de análise estática de código com Ruff.
-- Automação de processos (CI) com GitHub Actions.
-- Criação da primeira release oficial.
+- Integracao com a API publica ViaCEP.
+- Consulta de endereco por CEP na versao CLI.
+- Versao web simples publicada pelo GitHub Pages.
+- Testes de integracao com resposta mockada da API.
+
+## 1.0.0 - Entrega inicial
+
+- Cadastro de medicamentos pelo terminal.
+- Listagem dos medicamentos cadastrados.
+- Validacao de campos obrigatorios.
+- Testes automatizados com Pytest.
+- Analise de codigo com Ruff.
