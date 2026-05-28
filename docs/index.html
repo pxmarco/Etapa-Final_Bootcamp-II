@@ -217,8 +217,8 @@
       <div class="wrap">
         <h1>MedSync</h1>
         <p>
-          Controle de medicamentos com horario, dose, observacoes e endereco
-          de entrega ou retirada consultado pela API publica ViaCEP.
+          Gerencie seus medicamentos com controle de horários, doses e notas.<br> 
+          A integração com o ViaCEP localiza seu endereço de entrega/retirada automaticamente.
         </p>
       </div>
     </header>
@@ -229,11 +229,11 @@
           <h2 id="medicamentos-title">Medicamentos</h2>
           <form id="medication-form">
             <div class="field">
-              <label for="medication-name">Nome do remedio</label>
+              <label for="medication-name">Nome do remédio</label>
               <input id="medication-name" name="name" placeholder="Ex: Aspirina" required>
             </div>
             <div class="field">
-              <label for="medication-time">Horario</label>
+              <label for="medication-time">Horário</label>
               <input id="medication-time" name="time" type="time" required>
             </div>
             <div class="field">
@@ -241,11 +241,11 @@
               <input id="medication-dose" name="dose" placeholder="Ex: 500mg, 1 comprimido">
             </div>
             <div class="field">
-              <label for="medication-note">Observacao</label>
+              <label for="medication-note">Observação</label>
               <textarea
                 id="medication-note"
                 name="note"
-                placeholder="Ex: tomar depois do almoco"
+                placeholder="Ex: tomar depois do almoço"
               ></textarea>
             </div>
             <div class="actions">
@@ -262,7 +262,7 @@
           <h2 id="cep-title">Entrega ou retirada</h2>
           <form id="cep-form">
             <div class="field">
-              <label for="cep">CEP do endereco</label>
+              <label for="cep">CEP do endereço</label>
               <input
                 id="cep"
                 name="cep"
@@ -277,7 +277,7 @@
 
           <div class="status" id="cep-status" aria-live="polite"></div>
           <div class="address" id="address-result">
-            Nenhum endereco consultado ainda.
+            Nenhum endereço consultado ainda.
           </div>
         </section>
       </div>
@@ -330,7 +330,7 @@
           item.className = "item";
           header.className = "item-header";
           name.textContent = medication.name;
-          time.textContent = `Horario: ${medication.time}`;
+          time.textContent = `Horário: ${medication.time}`;
           removeButton.className = "danger";
           removeButton.type = "button";
           removeButton.textContent = "Remover";
@@ -355,7 +355,7 @@
 
           if (medication.note) {
             const note = document.createElement("p");
-            note.textContent = `Observacao: ${medication.note}`;
+            note.textContent = `Observação: ${medication.note}`;
             item.appendChild(note);
           }
 
@@ -381,7 +381,7 @@
         const note = medicationNote.value.trim();
 
         if (!name || !time) {
-          setStatus(medicationStatus, "Nome e horario sao obrigatorios.", "error");
+          setStatus(medicationStatus, "Nome e horário são obrigatórios.", "error");
           return;
         }
 
@@ -415,7 +415,7 @@
 
         const cep = onlyDigits(cepInput.value);
         if (cep.length !== 8) {
-          setStatus(cepStatus, "Informe um CEP com 8 digitos.", "error");
+          setStatus(cepStatus, "Informe um CEP com 8 dígitos.", "error");
           return;
         }
 
@@ -429,7 +429,7 @@
 
           const data = await response.json();
           if (data.erro) {
-            throw new Error("CEP nao encontrado.");
+            throw new Error("CEP não encontrado.");
           }
 
           addressResult.replaceChildren();
@@ -438,14 +438,14 @@
           const neighborhood = document.createElement("div");
           const city = document.createElement("div");
 
-          street.textContent = data.logradouro || "Logradouro nao informado";
-          neighborhood.textContent = `Bairro: ${data.bairro || "Nao informado"}`;
-          city.textContent = `Cidade: ${data.localidade || "Nao informada"} - ${data.uf || ""}`;
+          street.textContent = data.logradouro || "Logradouro não informado";
+          neighborhood.textContent = `Bairro: ${data.bairro || "Não informado"}`;
+          city.textContent = `Cidade: ${data.localidade || "Não informada"} - ${data.uf || ""}`;
 
           addressResult.append(street, neighborhood, city);
-          setStatus(cepStatus, "Endereco encontrado com sucesso.", "success");
+          setStatus(cepStatus, "Endereço encontrado com sucesso.", "success");
         } catch (error) {
-          addressResult.textContent = "Nenhum endereco valido para exibir.";
+          addressResult.textContent = "Nenhum endereço válido para exibir.";
           setStatus(cepStatus, error.message, "error");
         }
       });
