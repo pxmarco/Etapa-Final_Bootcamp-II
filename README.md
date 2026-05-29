@@ -101,8 +101,14 @@ Para validar a lógica e a conformidade do código com as regras de qualidade, u
 
 ## Deploy na Vercel
 O projeto está estruturado para o ecossistema Serverless da Vercel através das diretrizes do arquivo vercel.json:
-docs/index.html atua como o ponto de entrada da interface web (/).
-api/medications.py processa as requisições de persistência no Postgres.
-Para atualizar o ambiente de produção, certifique-se de ter a Vercel CLI instalada e execute:
-   ```Bash
-   vercel --prod
+1. docs/index.html atua como o ponto de entrada da interface web (/).
+2. api/medications.py processa as requisições de persistência no Postgres.
+3. Para atualizar o ambiente de produção, certifique-se de ter a Vercel CLI instalada e execute:
+    ```Bash
+    vercel --prod
+
+---
+
+Autores: Heber Macedo, Marco Antonio, Maria Clara Bertin e Thaynara Lima
+
+
