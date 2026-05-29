@@ -1,0 +1,31 @@
+on:
+  create:
+  delete:
+  issues:
+    types: [opened, closed]
+  pull_request:
+    types: [opened, closed]
+
+jobs:
+  registrar-evento:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Capturar e Exibir Evento
+      run: |
+        echo "=========================================================="
+        echo "EVENTO DETECTADO COM SUCESSO PELO ACTIONS"
+        echo "Quem realizou a ação: ${{ github.actor }}"
+        echo "Tipo de evento: ${{ github.event_name }}"
+        
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          echo "Ação no PR: ${{ github.event.action }}"
+          echo "Título do PR: ${{ github.event.pull_request.title }}"
+          echo "Autor do código: ${{ github.event.pull_request.user.login }}"
+          
+          # PR foi fechado e houve Merge, mostra quem revisou/aprovou
+          if [ "${{ github.event.action }}" = "closed" ] && [ "${{ github.event.pull_request.merged }}" = "true" ]; then
+            echo "STATUS: PULL REQUEST APROVADO E INTEGRADO (MERGE)!"
+            echo "Integrante que revisou e aprovou o Merge: ${{ github.actor }}"
+          fi
+        fi
+        echo "=========================================================="
