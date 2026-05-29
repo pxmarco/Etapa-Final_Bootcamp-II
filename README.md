@@ -3,9 +3,9 @@
 
 Deploy: https://hebermacedo.github.io/medsync/
 
-Este e o meu projeto do BootCamp. A ideia do MedSync e ajudar no controle de remedios, principalmente para quem toma varios medicamentos no dia e pode acabar esquecendo algum horario.
+Este é o projeto para Etapa Final da disciplina BootCamp. A ideia do MedSync é ajudar no controle de remédios, principalmente para quem toma vários medicamentos no dia, previnindo o esquecimento de algum horário e/ou dose.
 
-Nesta entrega intermediaria eu mantive a versao em Python pelo terminal e tambem fiz uma versao web simples, para ficar mais facil testar pelo link do deploy.
+## Funcionalidades
 
 ## O que da para fazer
 
@@ -56,18 +56,18 @@ criar as tabelas automaticamente se elas ainda nao existirem.
 
 ## API usada
 
-Usei a API publica ViaCEP para buscar endereco a partir de um CEP.
+Usamos a API pública ViaCEP para buscar endereços a partir de um CEP.
 
 Endpoint:
 
 `https://viacep.com.br/ws/{cep}/json/`
 
-No projeto, essa consulta serve para simular um endereco de entrega ou retirada de medicamento.
+No projeto, essa consulta serve para simular um endereço de entrega ou retirada de medicamento.
 
 ## Como rodar no computador
 
-1. Clone ou baixe o repositorio.
-2. Instale as dependencias:
+1. Clone ou baixe o repositório.
+2. Instale as dependências:
 
 `pip install -r requirements.txt`
 
@@ -75,7 +75,7 @@ No projeto, essa consulta serve para simular um endereco de entrega ou retirada 
 
 `python src/main.py`
 
-Tambem da para abrir o arquivo `main.py` no VS Code e clicar em **Run**.
+Tambem há a possibilidade de abrir o arquivo `main.py` no VS Code e clicar em **Run**.
 
 ## Testes
 
@@ -106,7 +106,7 @@ Depois, faca o deploy:
 
 ## Links
 
-Repositorio: https://github.com/HeberMacedo/medsync  
+Repositório: https://github.com/pxmarco/Etapa-final/
 Deploy: https://hebermacedo.github.io/medsync/
 
-Autor: Heber Macedo
+Autores: Heber Macedo, Marco Antonio, Maria Bertin e Thaynara Lima.

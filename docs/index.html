@@ -4,11 +4,453 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MedSync</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230f766e'/%3E%3Crect x='14' y='27' width='36' height='10' rx='5' fill='white'/%3E%3Crect x='27' y='14' width='10' height='36' rx='5' fill='white'/%3E%3C/svg%3E">
+    <style>
+      :root {
+        color: #1f2933;
+        background: #eef4f6;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      header {
+        background: #0f766e;
+        color: #ffffff;
+        padding: 28px 20px;
+      }
+
+      .wrap {
+        max-width: 1040px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 36px;
+      }
+
+      header p {
+        max-width: 720px;
+        margin: 0;
+        color: #d9fffb;
+        font-size: 17px;
+        line-height: 1.5;
+      }
+
+      main {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 28px 20px 44px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+        gap: 20px;
+      }
+
+      section {
+        background: #ffffff;
+        border: 1px solid #d6e1e5;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      h2 {
+        margin: 0 0 16px;
+        color: #12323a;
+        font-size: 22px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        color: #334155;
+        font-weight: 700;
+      }
+
+      input {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid #b8c7ce;
+        border-radius: 6px;
+        padding: 10px 12px;
+        color: #1f2933;
+        font-size: 16px;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 78px;
+        resize: vertical;
+        border: 1px solid #b8c7ce;
+        border-radius: 6px;
+        padding: 10px 12px;
+        color: #1f2933;
+        font-family: inherit;
+        font-size: 16px;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: #0f766e;
+        outline: 3px solid #bdf4ed;
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 4px;
+      }
+
+      button {
+        min-height: 42px;
+        border: 0;
+        border-radius: 6px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .primary {
+        background: #0f766e;
+        color: #ffffff;
+      }
+
+      .secondary {
+        background: #e5eef1;
+        color: #12323a;
+      }
+
+      .danger {
+        background: #f9dedc;
+        color: #9f1f18;
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .item {
+        border: 1px solid #d6e1e5;
+        border-left: 5px solid #0f766e;
+        border-radius: 8px;
+        padding: 12px;
+        background: #fbfdfe;
+      }
+
+      .item-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .item strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #12323a;
+      }
+
+      .item p {
+        margin: 8px 0 0;
+        color: #52616b;
+        line-height: 1.5;
+      }
+
+      .empty,
+      .status {
+        color: #52616b;
+        line-height: 1.5;
+      }
+
+      .status {
+        min-height: 24px;
+        margin-top: 12px;
+        font-weight: 700;
+      }
+
+      .success {
+        color: #0f766e;
+      }
+
+      .error {
+        color: #b42318;
+      }
+
+      .address {
+        margin-top: 14px;
+        border: 1px solid #d6e1e5;
+        border-radius: 8px;
+        padding: 14px;
+        background: #fbfdfe;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 800px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        h1 {
+          font-size: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>MedSync</h1>
+        <p>
+          Gerencie seus medicamentos com controle de horários, doses e notas.<br> 
+          A integração com o ViaCEP localiza seu endereço de entrega/retirada automaticamente.
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <div class="grid">
+        <section aria-labelledby="medicamentos-title">
+          <h2 id="medicamentos-title">Medicamentos</h2>
+          <form id="medication-form">
+            <div class="field">
+              <label for="medication-name">Nome do remédio</label>
+              <input id="medication-name" name="name" placeholder="Ex: Aspirina" required>
+            </div>
+            <div class="field">
+              <label for="medication-time">Horário</label>
+              <input id="medication-time" name="time" type="time" required>
+            </div>
+            <div class="field">
+              <label for="medication-dose">Dose</label>
+              <input id="medication-dose" name="dose" placeholder="Ex: 500mg, 1 comprimido">
+            </div>
+            <div class="field">
+              <label for="medication-note">Observação</label>
+              <textarea
+                id="medication-note"
+                name="note"
+                placeholder="Ex: tomar depois do almoço"
+              ></textarea>
+            </div>
+            <div class="actions">
+              <button class="primary" type="submit">Adicionar</button>
+              <button class="secondary" id="clear-medications" type="button">Limpar lista</button>
+            </div>
+          </form>
+
+          <div class="status" id="medication-status" aria-live="polite"></div>
+          <div class="list" id="medication-list"></div>
+        </section>
+
+        <section aria-labelledby="cep-title">
+          <h2 id="cep-title">Entrega ou retirada</h2>
+          <form id="cep-form">
+            <div class="field">
+              <label for="cep">CEP do endereço</label>
+              <input
+                id="cep"
+                name="cep"
+                inputmode="numeric"
+                maxlength="9"
+                placeholder="Ex: 01001-000"
+                required
+              >
+            </div>
+            <button class="primary" type="submit">Consultar ViaCEP</button>
+          </form>
+
+          <div class="status" id="cep-status" aria-live="polite"></div>
+          <div class="address" id="address-result">
+            Nenhum endereço consultado ainda.
+          </div>
+        </section>
+      </div>
+    </main>
+
     <script>
-      const token = localStorage.getItem("medsync-token");
-      const user = localStorage.getItem("medsync-user");
-      window.location.replace(token && user ? "/app" : "/login");
+      const medicationForm = document.querySelector("#medication-form");
+      const medicationName = document.querySelector("#medication-name");
+      const medicationTime = document.querySelector("#medication-time");
+      const medicationDose = document.querySelector("#medication-dose");
+      const medicationNote = document.querySelector("#medication-note");
+      const medicationStatus = document.querySelector("#medication-status");
+      const medicationList = document.querySelector("#medication-list");
+      const clearMedications = document.querySelector("#clear-medications");
+      const cepForm = document.querySelector("#cep-form");
+      const cepInput = document.querySelector("#cep");
+      const cepStatus = document.querySelector("#cep-status");
+      const addressResult = document.querySelector("#address-result");
+
+      let medications = JSON.parse(localStorage.getItem("medsync-medications") || "[]");
+      medications = medications.map((medication) => ({
+        id: medication.id || crypto.randomUUID(),
+        name: medication.name,
+        time: medication.time,
+        dose: medication.dose || "",
+        note: medication.note || "",
+      }));
+      saveMedications();
+
+      function saveMedications() {
+        localStorage.setItem("medsync-medications", JSON.stringify(medications));
+      }
+
+      function renderMedications() {
+        medicationList.innerHTML = "";
+
+        if (medications.length === 0) {
+          medicationList.innerHTML = '<p class="empty">Nenhum medicamento agendado.</p>';
+          return;
+        }
+
+        medications.forEach((medication) => {
+          const item = document.createElement("article");
+          const header = document.createElement("div");
+          const details = document.createElement("div");
+          const name = document.createElement("strong");
+          const time = document.createElement("span");
+          const removeButton = document.createElement("button");
+
+          item.className = "item";
+          header.className = "item-header";
+          name.textContent = medication.name;
+          time.textContent = `Horário: ${medication.time}`;
+          removeButton.className = "danger";
+          removeButton.type = "button";
+          removeButton.textContent = "Remover";
+
+          removeButton.addEventListener("click", () => {
+            medications = medications.filter((saved) => saved.id !== medication.id);
+            saveMedications();
+            renderMedications();
+            setStatus(medicationStatus, `${medication.name} removido da lista.`, "success");
+          });
+
+          details.appendChild(name);
+          details.appendChild(time);
+          header.append(details, removeButton);
+          item.appendChild(header);
+
+          if (medication.dose) {
+            const dose = document.createElement("p");
+            dose.textContent = `Dose: ${medication.dose}`;
+            item.appendChild(dose);
+          }
+
+          if (medication.note) {
+            const note = document.createElement("p");
+            note.textContent = `Observação: ${medication.note}`;
+            item.appendChild(note);
+          }
+
+          medicationList.appendChild(item);
+        });
+      }
+
+      function setStatus(element, message, type) {
+        element.textContent = message;
+        element.className = `status ${type || ""}`;
+      }
+
+      function onlyDigits(value) {
+        return value.replace(/\D/g, "");
+      }
+
+      medicationForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const name = medicationName.value.trim();
+        const time = medicationTime.value.trim();
+        const dose = medicationDose.value.trim();
+        const note = medicationNote.value.trim();
+
+        if (!name || !time) {
+          setStatus(medicationStatus, "Nome e horário são obrigatórios.", "error");
+          return;
+        }
+
+        medications.push({
+          id: crypto.randomUUID(),
+          name,
+          time,
+          dose,
+          note,
+        });
+        saveMedications();
+        renderMedications();
+        medicationForm.reset();
+        setStatus(medicationStatus, `${name} agendado para ${time}.`, "success");
+      });
+
+      clearMedications.addEventListener("click", () => {
+        medications = [];
+        saveMedications();
+        renderMedications();
+        setStatus(medicationStatus, "Lista limpa.", "success");
+      });
+
+      cepInput.addEventListener("input", () => {
+        const digits = onlyDigits(cepInput.value).slice(0, 8);
+        cepInput.value = digits.replace(/^(\d{5})(\d{1,3})$/, "$1-$2");
+      });
+
+      cepForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const cep = onlyDigits(cepInput.value);
+        if (cep.length !== 8) {
+          setStatus(cepStatus, "Informe um CEP com 8 dígitos.", "error");
+          return;
+        }
+
+        setStatus(cepStatus, "Consultando API ViaCEP...", "");
+
+        try {
+          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+          if (!response.ok) {
+            throw new Error("Falha na consulta.");
+          }
+
+          const data = await response.json();
+          if (data.erro) {
+            throw new Error("CEP não encontrado.");
+          }
+
+          addressResult.replaceChildren();
+
+          const street = document.createElement("strong");
+          const neighborhood = document.createElement("div");
+          const city = document.createElement("div");
+
+          street.textContent = data.logradouro || "Logradouro não informado";
+          neighborhood.textContent = `Bairro: ${data.bairro || "Não informado"}`;
+          city.textContent = `Cidade: ${data.localidade || "Não informada"} - ${data.uf || ""}`;
+
+          addressResult.append(street, neighborhood, city);
+          setStatus(cepStatus, "Endereço encontrado com sucesso.", "success");
+        } catch (error) {
+          addressResult.textContent = "Nenhum endereço válido para exibir.";
+          setStatus(cepStatus, error.message, "error");
+        }
+      });
+
+      renderMedications();
     </script>
   </head>
   <body>
