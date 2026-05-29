@@ -1851,8 +1851,8 @@
           <div>
             <h1>Painel de medicamentos.</h1>
             <p>
-              Organize remedios, horarios, doses, observacoes e consulta de
-              entrega em uma area privada da sua conta.
+              Organize a rotina dos seus medicamentos controlando horários, doses e observações. <br>
+              Encontre o endereço de entrega/retirada instantaneamente digitando o CEP.
             </p>
           </div>
         </div>
@@ -1865,8 +1865,8 @@
           <nav class="app-nav" aria-label="Navegacao do aplicativo">
             <button class="nav-button is-active" type="button" data-page="medications-page">Medicamentos</button>
             <button class="nav-button" type="button" data-page="agenda-page">Agenda</button>
-            <button class="nav-button" type="button" data-page="delivery-page">Reposicao</button>
-            <button class="nav-button" type="button" data-page="reports-page">Relatorios</button>
+            <button class="nav-button" type="button" data-page="delivery-page">Reposição</button>
+            <button class="nav-button" type="button" data-page="reports-page">Relatórios</button>
           </nav>
 
           <div class="app-content">
@@ -1888,12 +1888,12 @@
 
             <form class="medication-form" id="medication-form">
               <div class="quick-actions" aria-label="Sugestoes rapidas">
-                <button class="quick-chip" type="button" data-time="08:00">Manha 08:00</button>
-                <button class="quick-chip" type="button" data-time="12:00">Almoco 12:00</button>
+                <button class="quick-chip" type="button" data-time="08:00">Manhã 08:00</button>
+                <button class="quick-chip" type="button" data-time="12:00">Tarde 12:00</button>
                 <button class="quick-chip" type="button" data-time="20:00">Noite 20:00</button>
               </div>
               <div class="field">
-                <label for="medication-name">Nome do remedio</label>
+                <label for="medication-name">Nome do remédio</label>
                 <input id="medication-name" name="name" list="medicine-suggestions" placeholder="Ex: Aspirina" required>
                 <datalist id="medicine-suggestions">
                   <option value="Dipirona">
@@ -1905,7 +1905,7 @@
                 </datalist>
               </div>
               <div class="field">
-                <label for="medication-time">Horario</label>
+                <label for="medication-time">Horário</label>
                 <input id="medication-time" name="time" type="time" required>
               </div>
               <div class="field">
@@ -1914,7 +1914,7 @@
               </div>
               <div class="field field-wide">
                 <label for="medication-note">Como tomar</label>
-                <textarea id="medication-note" name="note" placeholder="Ex: tomar depois do almoco, evitar jejum, beber agua"></textarea>
+                <textarea id="medication-note" name="note" placeholder="Ex: tomar depois do almoço, evitar jejum"></textarea>
               </div>
               <div class="form-footer">
                 <button class="primary" type="submit">Salvar na agenda</button>
@@ -1926,21 +1926,21 @@
             <div class="agenda-top">
               <div>
                 <h2 id="agenda-title">Agenda do dia</h2>
-                <p>Confira os horarios cadastrados, acompanhe doses pendentes e registre o que ja foi tomado.</p>
+                <p>Confira os horários cadastrados, acompanhe as doses pendentes e registre o que já foi tomado.</p>
               </div>
               <div class="view-tabs" role="tablist" aria-label="Periodo da agenda">
                 <button class="view-tab is-active" type="button" data-period="day">Dia</button>
                 <button class="view-tab" type="button" data-period="week">Semana</button>
-                <button class="view-tab" type="button" data-period="month">Mes</button>
+                <button class="view-tab" type="button" data-period="month">Mês</button>
               </div>
             </div>
             <div class="period-grid" aria-label="Resumo por periodo">
               <div class="period-card morning">
-                <strong>Manha</strong>
+                <strong>Manhã</strong>
                 <span id="period-morning">0 medicamentos</span>
               </div>
               <div class="period-card lunch">
-                <strong>Almoco</strong>
+                <strong>Tarde</strong>
                 <span id="period-lunch">0 medicamentos</span>
               </div>
               <div class="period-card night">
@@ -1965,7 +1965,7 @@
             <div class="report-toolbar" aria-label="Periodo do relatorio">
               <button class="report-filter is-active" type="button" data-report-range="day">Hoje</button>
               <button class="report-filter" type="button" data-report-range="week">Semana</button>
-              <button class="report-filter" type="button" data-report-range="month">Mes</button>
+              <button class="report-filter" type="button" data-report-range="month">Mês</button>
             </div>
 
             <div class="report-grid">
@@ -1988,9 +1988,9 @@
 
             <div class="insight-layout">
               <div class="side-card featured-report">
-                <span class="card-label">Proxima dose</span>
-                <strong id="next-medication-name">Sem proximo remedio</strong>
-                <span id="next-medication-detail">Cadastre um medicamento com horario para acompanhar a proxima dose.</span>
+                <span class="card-label">Próxima dose</span>
+                <strong id="next-medication-name">Sem próximo remédio</strong>
+                <span id="next-medication-detail">Cadastre um medicamento com horário para acompanhar a próxima dose.</span>
                 <div class="mini-chart" id="mini-chart" aria-label="Distribuicao semanal">
                   <span></span><span></span><span></span><span></span><span></span>
                 </div>
@@ -1998,40 +1998,40 @@
 
               <div class="side-card">
                 <span class="card-label">Agenda</span>
-                <strong>Proximos horarios</strong>
+                <strong>Próximos horários</strong>
                 <div class="timeline" id="timeline-list"></div>
               </div>
 
               <div class="side-card">
                 <span class="card-label">Seguranca</span>
-                <strong>Verificacao de interacoes</strong>
-                <span id="interaction-summary">Nenhuma combinacao de risco identificada nos itens cadastrados.</span>
+                <strong>Verificação de interações</strong>
+                <span id="interaction-summary">Nenhuma combinação de risco identificada nos itens cadastrados.</span>
               </div>
 
               <div class="side-card score-card">
-                <span class="card-label">Organizacao</span>
-                <strong>Sua pontuacao de saude</strong>
+                <span class="card-label">Organização</span>
+                <strong>Sua pontuação de saúde</strong>
                 <span id="health-score">Medicamentos organizados: 0%</span>
                 <div class="score-track"><span id="score-fill"></span></div>
-                <span class="score-label">Nivel de acompanhamento</span>
+                <span class="score-label">Nível de acompanhamento</span>
               </div>
             </div>
           </section>
 
           <section class="app-page insights-panel" id="delivery-page" aria-labelledby="cep-title">
             <div class="side-title">
-              <h2 id="cep-title">Entrega de reposicao</h2>
+              <h2 id="cep-title">Entrega de reposição</h2>
               <p>Planeje compra, retirada ou entrega dos medicamentos antes de acabar.</p>
             </div>
 
             <div class="delivery-grid">
               <div class="delivery-card">
-                <span class="card-label">Endereco</span>
+                <span class="card-label">Endereço</span>
                 <strong>Validar local de entrega</strong>
-                <p>Use o CEP para simular a area de reposicao e organizar retirada ou entrega.</p>
+                <p>Use o CEP para simular a área de reposição e organizar retirada ou entrega.</p>
                 <form id="cep-form">
                   <div class="field">
-                    <label for="cep">CEP para reposicao</label>
+                    <label for="cep">CEP para reposição</label>
                     <input id="cep" name="cep" inputmode="numeric" maxlength="9" placeholder="Ex: 01001-000" required>
                   </div>
                   <div class="cep-presets" aria-label="CEPs rapidos">
@@ -2039,12 +2039,12 @@
                     <button type="button" data-cep="20040002">RJ centro</button>
                     <button type="button" data-cep="30140071">BH centro</button>
                   </div>
-                  <button class="success-button" type="submit">Validar endereco</button>
+                  <button class="success-button" type="submit">Validar endereço</button>
                 </form>
                 <div class="status" id="cep-status" aria-live="polite"></div>
                 <div class="address" id="address-result">
-                  <span class="delivery-result-title">Endereco de reposicao</span>
-                  Nenhum endereco validado ainda.
+                  <span class="delivery-result-title">Endereço de reposição</span>
+                  Nenhum endereço validado ainda.
                 </div>
               </div>
 
@@ -2054,11 +2054,11 @@
                 <div class="delivery-summary" aria-label="Fluxo de reposicao">
                   <div class="delivery-step">
                     <strong>1</strong>
-                    <span>Confirme o CEP e veja o endereco base.</span>
+                    <span>Confirme o CEP e veja o endereço base.</span>
                   </div>
                   <div class="delivery-step">
                     <strong>2</strong>
-                    <span>Confira a proxima dose no relatorio.</span>
+                    <span>Confira a próxima dose no relatório.</span>
                   </div>
                   <div class="delivery-step">
                     <strong>3</strong>
@@ -2068,10 +2068,10 @@
               </div>
 
               <div class="delivery-card delivery-stock">
-                <span class="card-label">Reposicao</span>
-                <strong>Checklist rapido</strong>
+                <span class="card-label">Reposição</span>
+                <strong>Checklist rápido</strong>
                 <label class="check-row"><input type="checkbox"> Conferir quantidade restante</label>
-                <label class="check-row"><input type="checkbox"> Separar receita ou orientacao</label>
+                <label class="check-row"><input type="checkbox"> Separar receita ou orientação</label>
                 <label class="check-row"><input type="checkbox"> Confirmar forma de retirada</label>
               </div>
             </div>
@@ -2340,7 +2340,7 @@
           saveLocalMedications();
           renderMedications();
           setMode("", "Offline");
-          setStatus(medicationStatus, "Mostrando a ultima agenda disponivel.", "error");
+          setStatus(medicationStatus, "Mostrando a última agenda disponível.", "error");
         }
       }
 
@@ -2369,7 +2369,7 @@
         agendaCount.textContent = `${projectedCount} ${projectedCount === 1 ? "item" : "itens"} ${period.label}`;
 
         if (medications.length === 0) {
-          medicationList.innerHTML = '<p class="empty">Nenhum medicamento na agenda ainda. Cadastre o primeiro remedio para acompanhar horarios, doses e observacoes.</p>';
+          medicationList.innerHTML = '<p class="empty">Nenhum medicamento na agenda ainda. Cadastre o primeiro remédio para acompanhar horários, doses e observações.</p>';
           updateStats();
           return;
         }
@@ -2474,13 +2474,13 @@
         periodLunch.textContent = `${lunchCount * period.multiplier} ${lunchCount === 1 && period.multiplier === 1 ? "medicamento" : "medicamentos"} ${periodSuffix}`;
         periodNight.textContent = `${nightCount * period.multiplier} ${nightCount === 1 && period.multiplier === 1 ? "medicamento" : "medicamentos"} ${periodSuffix}`;
         reportStats = { total, taken, pending };
-        nextMedicationName.textContent = next ? next.name : "Sem proximo remedio";
+        nextMedicationName.textContent = next ? next.name : "Sem próximo remédio";
         nextMedicationDetail.textContent = next
           ? `${next.time}${next.dose ? ` - ${next.dose}` : ""}`
-          : "Cadastre um medicamento com horario para visualizar a proxima dose da rotina.";
+          : "Cadastre um medicamento com horário para visualizar a próxima dose da rotina.";
         interactionSummary.textContent = total > 1
-          ? "Revise combinacoes com um profissional de saude quando houver mais de um medicamento."
-          : "Nenhuma combinacao de risco identificada nos itens cadastrados.";
+          ? "Revise combinações com um profissional de saúde quando houver mais de um medicamento."
+          : "Nenhuma combinação de risco identificada nos itens cadastrados.";
         healthScore.textContent = `Medicamentos com dose definida: ${organizedPercent}%`;
         scoreFill.style.width = `${organizedPercent}%`;
         reportChartValues = [morningCount, lunchCount, nightCount, taken, pending];
@@ -2536,7 +2536,7 @@
 
           time.textContent = medication.time;
           name.textContent = medication.name;
-          dose.textContent = medication.dose || "Dose nao informada";
+          dose.textContent = medication.dose || "Dose não informada";
 
           detail.append(name, dose);
           item.append(time, detail);
@@ -2626,7 +2626,7 @@
         event.preventDefault();
 
         if (!currentUser) {
-          setStatus(medicationStatus, "Faca login antes de adicionar medicamentos.", "error");
+          setStatus(medicationStatus, "Faça login antes de adicionar medicamentos.", "error");
           return;
         }
 
@@ -2639,7 +2639,7 @@
         };
 
         if (!medication.name || !medication.time) {
-          setStatus(medicationStatus, "Nome e horario sao obrigatorios.", "error");
+          setStatus(medicationStatus, "Nome e horário são obrigatórios.", "error");
           return;
         }
 
@@ -2666,7 +2666,7 @@
 
       clearMedications.addEventListener("click", async () => {
         if (!currentUser) {
-          setStatus(medicationStatus, "Faca login para limpar sua lista.", "error");
+          setStatus(medicationStatus, "Faça login para limpar sua lista.", "error");
           return;
         }
 
@@ -2686,7 +2686,7 @@
           renderMedications();
           setStatus(medicationStatus, "Lista limpa.", "success");
         } catch (error) {
-          setStatus(medicationStatus, "Nao foi possivel limpar a lista.", "error");
+          setStatus(medicationStatus, "Na7o foi possível limpar a lista.", "error");
         }
       });
 
@@ -2710,7 +2710,7 @@
 
         const cep = onlyDigits(cepInput.value);
         if (cep.length !== 8) {
-          setStatus(cepStatus, "Informe um CEP com 8 digitos.", "error");
+          setStatus(cepStatus, "Informe um CEP com 8 dígitos.", "error");
           return;
         }
 
@@ -2724,7 +2724,7 @@
 
           const data = await response.json();
           if (data.erro) {
-            throw new Error("CEP nao encontrado.");
+            throw new Error("CEP não encontrado.");
           }
 
           addressResult.replaceChildren();
@@ -2735,15 +2735,15 @@
           const title = document.createElement("span");
 
           title.className = "delivery-result-title";
-          title.textContent = "Endereco de reposicao";
-          street.textContent = data.logradouro || "Logradouro nao informado";
-          neighborhood.textContent = `Bairro: ${data.bairro || "Nao informado"}`;
-          city.textContent = `Cidade: ${data.localidade || "Nao informada"} - ${data.uf || ""}`;
+          title.textContent = "Endereço de reposição";
+          street.textContent = data.logradouro || "Logradouro não informado";
+          neighborhood.textContent = `Bairro: ${data.bairro || "Não informado"}`;
+          city.textContent = `Cidade: ${data.localidade || "Não informada"} - ${data.uf || ""}`;
 
           addressResult.append(title, street, neighborhood, city);
-          setStatus(cepStatus, "Endereco validado para reposicao.", "success");
+          setStatus(cepStatus, "Endereço validado para reposição.", "success");
         } catch (error) {
-          addressResult.innerHTML = '<span class="delivery-result-title">Endereco de reposicao</span>Nenhum endereco valido para exibir.';
+          addressResult.innerHTML = '<span class="delivery-result-title">Endereco de reposição</span>Nenhum endereço válido para exibir.';
           setStatus(cepStatus, error.message, "error");
         }
       });
