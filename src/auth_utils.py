@@ -114,3 +114,10 @@ def public_user(row):
         "name": row["name"],
         "email": row["email"],
     }
+
+
+def user_initials(name):
+    parts = str(name or "").strip().split()
+    if not parts:
+        return "--"
+    return "".join(part[0] for part in parts[:2]).upper()
