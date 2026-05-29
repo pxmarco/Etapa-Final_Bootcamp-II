@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch
 
 from api.medications import _create_medication, _list_medications
