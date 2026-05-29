@@ -1,5 +1,5 @@
 # MedSync
-![CI](https://github.com/HeberMacedo/medsync/actions/workflows/main.yml/badge.svg)
+![CI](https://medsync-main.vercel.app/app)
 
 Deploy: https://hebermacedo.github.io/medsync/
 
@@ -107,6 +107,6 @@ Depois, faca o deploy:
 ## Links
 
 Repositório: https://github.com/pxmarco/Etapa-final/
-Deploy: https://hebermacedo.github.io/medsync/
+Deploy: https://medsync-main.vercel.app/app
 
 Autores: Heber Macedo, Marco Antonio, Maria Bertin e Thaynara Lima.
