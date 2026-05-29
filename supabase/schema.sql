@@ -15,6 +15,10 @@ CREATE TABLE IF NOT EXISTS medications (
     time TEXT NOT NULL,
     dose TEXT NOT NULL DEFAULT '',
     note TEXT NOT NULL DEFAULT '',
+    cep TEXT NOT NULL DEFAULT '',
+    logradouro TEXT NOT NULL DEFAULT '',
+    cidade TEXT NOT NULL DEFAULT '',
+    uf TEXT NOT NULL DEFAULT '',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
