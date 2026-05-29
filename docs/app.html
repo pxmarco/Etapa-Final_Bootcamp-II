@@ -1873,15 +1873,15 @@
           <section class="app-page is-active medications-panel" id="medications-page" aria-labelledby="medicamentos-title">
             <div class="section-head">
               <div>
-                <span class="section-kicker">+ Novo Medicamento</span>
-                <h2 id="medicamentos-title">Medicamentos</h2>
+                <span class="section-kicker">+ Agenda de cuidado</span>
+                <h2 id="medicamentos-title">Medicamentos da rotina</h2>
               </div>
             </div>
 
             <div class="panel-toolbar">
               <div class="search-wrap">
-                <label for="medication-search">Buscar na agenda</label>
-                <input id="medication-search" placeholder="Pesquise por nome, dose ou observacao">
+                <label for="medication-search">Buscar medicamento</label>
+                <input id="medication-search" placeholder="Pesquise por nome, horario, dose ou observacao">
               </div>
               <button class="secondary" id="clear-medications" type="button">Limpar agenda</button>
             </div>
@@ -1926,7 +1926,7 @@
             <div class="agenda-top">
               <div>
                 <h2 id="agenda-title">Agenda do dia</h2>
-                <p>Organize as doses por periodo e registre o que ja foi tomado.</p>
+                <p>Confira os horarios cadastrados, acompanhe doses pendentes e registre o que ja foi tomado.</p>
               </div>
               <div class="view-tabs" role="tablist" aria-label="Periodo da agenda">
                 <button class="view-tab is-active" type="button" data-period="day">Dia</button>
@@ -1990,7 +1990,7 @@
               <div class="side-card featured-report">
                 <span class="card-label">Proxima dose</span>
                 <strong id="next-medication-name">Sem proximo remedio</strong>
-                <span id="next-medication-detail">Cadastre um horario para acompanhar a proxima dose.</span>
+                <span id="next-medication-detail">Cadastre um medicamento com horario para acompanhar a proxima dose.</span>
                 <div class="mini-chart" id="mini-chart" aria-label="Distribuicao semanal">
                   <span></span><span></span><span></span><span></span><span></span>
                 </div>
@@ -2369,7 +2369,7 @@
         agendaCount.textContent = `${projectedCount} ${projectedCount === 1 ? "item" : "itens"} ${period.label}`;
 
         if (medications.length === 0) {
-          medicationList.innerHTML = '<p class="empty">Nenhum medicamento agendado. Cadastre o primeiro item da rotina.</p>';
+          medicationList.innerHTML = '<p class="empty">Nenhum medicamento na agenda ainda. Cadastre o primeiro remedio para acompanhar horarios, doses e observacoes.</p>';
           updateStats();
           return;
         }
@@ -2477,7 +2477,7 @@
         nextMedicationName.textContent = next ? next.name : "Sem proximo remedio";
         nextMedicationDetail.textContent = next
           ? `${next.time}${next.dose ? ` - ${next.dose}` : ""}`
-          : "Cadastre um horario para acompanhar a proxima dose.";
+          : "Cadastre um medicamento com horario para visualizar a proxima dose da rotina.";
         interactionSummary.textContent = total > 1
           ? "Revise combinacoes com um profissional de saude quando houver mais de um medicamento."
           : "Nenhuma combinacao de risco identificada nos itens cadastrados.";
