@@ -25,7 +25,7 @@ O **MedSync** nasce para solucionar essas frustrações através de um gerenciam
 
 ---
 
-## 🚀 Funcionalidades do Sistema
+## Funcionalidades do Sistema
 
 O MedSync oferece uma experiência fluida dividida nos seguintes recursos:
 
@@ -36,7 +36,7 @@ O MedSync oferece uma experiência fluida dividida nos seguintes recursos:
 
 ---
 
-## 🛠️ Tecnologias e Infraestrutura
+## Tecnologias e Infraestrutura
 
 - **Front-end:** HTML5, CSS3 (Responsivo com Grid e Flexbox) e JavaScript Vanilla.
 - **Back-end & API:** Python integrado ao modelo de rotas Serverless da **Vercel**.
