@@ -3,34 +3,30 @@
 
 Deploy: https://hebermacedo.github.io/medsync/
 
-Este e o meu projeto do BootCamp. A ideia do MedSync e ajudar no controle de remedios, principalmente para quem toma varios medicamentos no dia e pode acabar esquecendo algum horario.
+Este é o meu projeto do BootCamp. A ideia do MedSync é ajudar no controle de remédios, principalmente para quem toma vários medicamentos no dia e pode acabar esquecendo algum horário.
 
-Nesta entrega intermediaria eu mantive a versao em Python pelo terminal e tambem fiz uma versao web simples, para ficar mais facil testar pelo link do deploy.
+## Funcionalidades
 
-## O que da para fazer
-
-* Cadastrar um remedio, horario, dose e observacao.
-* Ver a lista de remedios cadastrados.
-* Remover um remedio da lista na versao web.
-* Consultar um endereco pelo CEP usando a API ViaCEP.
-* Usar a versao web pelo navegador.
-
-Na versao web, os remedios ficam salvos no proprio navegador.
+* Cadastrar um remédio, horário, dose e observação.
+* Ver a lista de remédios cadastrados.
+* Remover um remédio da lista na versão web.
+* Consultar um endereço pelo CEP usando a API ViaCEP.
+* Usar a versão web pelo navegador.
 
 ## API usada
 
-Usei a API publica ViaCEP para buscar endereco a partir de um CEP.
+Usamos a API pública ViaCEP para buscar endereços a partir de um CEP.
 
 Endpoint:
 
 `https://viacep.com.br/ws/{cep}/json/`
 
-No projeto, essa consulta serve para simular um endereco de entrega ou retirada de medicamento.
+No projeto, essa consulta serve para simular um endereço de entrega ou retirada de medicamento.
 
 ## Como rodar no computador
 
-1. Clone ou baixe o repositorio.
-2. Instale as dependencias:
+1. Clone ou baixe o repositório.
+2. Instale as dependências:
 
 `pip install -r requirements.txt`
 
@@ -38,7 +34,7 @@ No projeto, essa consulta serve para simular um endereco de entrega ou retirada 
 
 `python src/main.py`
 
-Tambem da para abrir o arquivo `main.py` no VS Code e clicar em **Run**.
+Tambem há a possibilidade de abrir o arquivo `main.py` no VS Code e clicar em **Run**.
 
 ## Testes
 
@@ -52,7 +48,7 @@ Para rodar o lint:
 
 ## Links
 
-Repositorio: https://github.com/HeberMacedo/medsync  
+Repositório: https://github.com/pxmarco/Etapa-final/
 Deploy: https://hebermacedo.github.io/medsync/
 
-Autor: Heber Macedo
+Autores: Heber Macedo, Marco Antonio, Maria Bertin e Thaynara Lima.
