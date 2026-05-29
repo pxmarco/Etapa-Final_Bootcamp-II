@@ -3,7 +3,7 @@
 
 Deploy: https://hebermacedo.github.io/medsync/
 
-Este é o meu projeto do BootCamp. A ideia do MedSync é ajudar no controle de remédios, principalmente para quem toma vários medicamentos no dia e pode acabar esquecendo algum horário.
+Este é o projeto para Etapa Final da disciplina BootCamp. A ideia do MedSync é ajudar no controle de remédios, principalmente para quem toma vários medicamentos no dia, previnindo o esquecimento de algum horário e/ou dose.
 
 ## Funcionalidades
 
