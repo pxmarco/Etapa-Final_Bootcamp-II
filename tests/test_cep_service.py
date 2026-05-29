@@ -27,13 +27,13 @@ def test_consultar_cep_com_resposta_mockada():
                 "cep": "01001-000",
                 "logradouro": "Praca da Se",
                 "bairro": "Se",
-                "localidade": "Sao Paulo",
+                 "localidade": "Sao Paulo",
                 "uf": "SP",
             }
         )
 
     endereco = consultar_cep("01001-000", opener=fake_opener)
-
+#organiza endereço
     assert endereco == {
         "cep": "01001-000",
         "logradouro": "Praca da Se",
