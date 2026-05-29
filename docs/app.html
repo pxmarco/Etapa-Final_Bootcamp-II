@@ -1,0 +1,2754 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MedSync</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230f766e'/%3E%3Crect x='14' y='27' width='36' height='10' rx='5' fill='white'/%3E%3Crect x='27' y='14' width='10' height='36' rx='5' fill='white'/%3E%3C/svg%3E">
+    <style>
+      :root {
+        --ink: #102033;
+        --muted: #607086;
+        --line: #cdd9e8;
+        --paper: #ffffff;
+        --mist: #dfeaf4;
+        --panel: #f8fbff;
+        --deep: #12323a;
+        --night: #0b1f2a;
+        --cyan: #0ea5e9;
+        --teal: #0f766e;
+        --blue: #2563eb;
+        --rose: #dc2626;
+        --amber: #f59e0b;
+        --green: #16a34a;
+        --violet: #4f46e5;
+        --shadow: 0 18px 50px rgba(16, 32, 51, 0.14);
+        color: var(--ink);
+        background: var(--mist);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+          linear-gradient(115deg, rgba(18, 50, 58, 0.16), rgba(37, 99, 235, 0.13)),
+          var(--mist);
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        min-height: 42px;
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: 800;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      button:disabled {
+        cursor: wait;
+        opacity: 0.7;
+        transform: none;
+      }
+
+      header {
+        position: relative;
+        overflow: hidden;
+        color: #ffffff;
+        background:
+          linear-gradient(120deg, rgba(11, 31, 42, 0.99) 0%, rgba(15, 118, 110, 0.96) 54%, rgba(37, 99, 235, 0.92) 100%),
+          repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 18px);
+        padding: 28px 28px 46px;
+      }
+
+      header::after {
+        content: "";
+        position: absolute;
+        left: -20%;
+        right: -20%;
+        bottom: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--teal), var(--cyan), var(--blue), var(--teal));
+        background-size: 200% 100%;
+        animation: flow 8s linear infinite;
+      }
+
+      @keyframes flow {
+        to {
+          background-position: 200% 0;
+        }
+      }
+
+      .wrap {
+        width: 100%;
+        margin: 0;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      .brand-mark {
+        position: relative;
+        display: grid;
+        width: 46px;
+        height: 46px;
+        place-items: center;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #ffffff, #dff8ff);
+        color: transparent;
+        box-shadow: var(--shadow);
+      }
+
+      .brand-mark::before,
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        background: var(--teal);
+      }
+
+      .brand-mark::before {
+        width: 24px;
+        height: 8px;
+      }
+
+      .brand-mark::after {
+        width: 8px;
+        height: 24px;
+      }
+
+      .session {
+        display: none;
+        position: relative;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .session.is-visible {
+        display: flex;
+      }
+
+      .profile-button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 48px;
+        border: 1px solid rgba(255, 255, 255, 0.36);
+        border-radius: 8px;
+        padding: 6px 10px 6px 6px;
+        background: rgba(255, 255, 255, 0.17);
+        color: #ffffff;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+      }
+
+      .avatar {
+        display: grid;
+        width: 36px;
+        height: 36px;
+        place-items: center;
+        border-radius: 8px;
+        background: #ffffff;
+        color: var(--blue);
+        font-weight: 900;
+      }
+
+      .profile-text {
+        min-width: 0;
+        text-align: left;
+      }
+
+      .profile-name,
+      .profile-email {
+        display: block;
+        max-width: 190px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .profile-name {
+        font-weight: 800;
+      }
+
+      .profile-email {
+        margin-top: 2px;
+        color: #dff8ff;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .chevron {
+        color: #dff8ff;
+        font-size: 14px;
+      }
+
+      .profile-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        z-index: 10;
+        width: min(320px, calc(100vw - 32px));
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: #ffffff;
+        color: var(--ink);
+        box-shadow: 0 18px 50px rgba(23, 32, 42, 0.2);
+      }
+
+      .profile-menu.is-open {
+        display: block;
+      }
+
+      .menu-head {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 12px;
+        align-items: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .menu-avatar {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border-radius: 8px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-weight: 900;
+      }
+
+      .menu-name,
+      .menu-email {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .menu-name {
+        color: #12323a;
+        font-weight: 900;
+      }
+
+      .menu-email {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .menu-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 12px 0;
+        padding: 10px;
+        border-radius: 8px;
+        background: #f0fdf4;
+        color: #166534;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .logout-button {
+        width: 100%;
+        background: #ffe4e9;
+        color: #be123c;
+      }
+
+      .profile-row {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        min-width: 0;
+      }
+
+      .profile-dot {
+        width: 7px;
+        height: 7px;
+        flex: 0 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.88);
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.16);
+      }
+
+      .menu-mini-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin: 0 0 12px;
+      }
+
+      .menu-mini-grid span {
+        border: 1px solid #dbeafe;
+        border-radius: 12px;
+        padding: 9px;
+        background: linear-gradient(135deg, #eff6ff, #ecfdf5);
+        color: #31525d;
+        font-size: 12px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .hero {
+        width: 100%;
+        padding-top: 58px;
+      }
+
+      h1 {
+        max-width: none;
+        margin: 0;
+        font-size: clamp(38px, 6vw, 72px);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .hero p {
+        max-width: 860px;
+        margin: 18px 0 0;
+        color: #e9fffb;
+        font-size: 18px;
+        line-height: 1.55;
+      }
+
+      main {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 18px 28px 44px;
+        transform: none;
+      }
+
+      .dashboard {
+        display: grid;
+        gap: 20px;
+        width: 100%;
+      }
+
+      section.dashboard {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .app-shell {
+        display: grid;
+        gap: 16px;
+      }
+
+      .app-nav {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        border: 1px solid rgba(18, 50, 58, 0.14);
+        border-radius: 8px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .nav-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        min-height: 44px;
+        min-width: 0;
+        background: transparent;
+        color: #334155;
+        box-shadow: none;
+      }
+
+      .nav-button.is-active {
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        color: #ffffff;
+        box-shadow: 0 12px 24px rgba(15, 118, 110, 0.2);
+      }
+
+      .app-content {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .app-page {
+        display: none;
+      }
+
+      .app-page.is-active {
+        display: block;
+      }
+
+      .app-page.is-active.medications-panel,
+      .app-page.is-active.agenda-panel,
+      .app-page.is-active.insights-panel {
+        min-height: calc(100vh - 330px);
+        width: 100%;
+      }
+
+      section,
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+      }
+
+      .board > section:not(.medications-panel) {
+        border-color: #b8cce0;
+        background:
+          linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      h2,
+      h3 {
+        margin: 0;
+        color: #12323a;
+      }
+
+      h2 {
+        font-size: 25px;
+      }
+
+      h3 {
+        font-size: 18px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 7px;
+        color: #334155;
+        font-weight: 800;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        border: 1px solid #aebfce;
+        border-radius: 8px;
+        background: #ffffff;
+        color: var(--ink);
+        font-size: 16px;
+      }
+
+      input {
+        min-height: 44px;
+        padding: 10px 12px;
+      }
+
+      textarea {
+        min-height: 88px;
+        resize: vertical;
+        padding: 10px 12px;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: var(--blue);
+        outline: 3px solid rgba(37, 99, 235, 0.16);
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .primary {
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        color: #ffffff;
+        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.26);
+      }
+
+      .success-button {
+        background: linear-gradient(135deg, var(--teal), var(--cyan));
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(15, 118, 110, 0.18);
+      }
+
+      .secondary {
+        background: #dfeaf5;
+        color: #12323a;
+      }
+
+      .quiet {
+        background: rgba(255, 255, 255, 0.16);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+      }
+
+      .workspace {
+        display: grid;
+        gap: 20px;
+      }
+
+      .board {
+        display: block;
+      }
+
+      .medications-panel {
+        padding: 0;
+        overflow: hidden;
+        border-color: #b8cce0;
+        width: 100%;
+      }
+
+      .medications-panel > .section-head {
+        padding: 22px 22px 10px;
+        margin-bottom: 0;
+        background:
+          linear-gradient(135deg, rgba(11, 31, 42, 0.98), rgba(15, 118, 110, 0.92)),
+          linear-gradient(45deg, #0f766e, #2563eb);
+      }
+
+      .section-kicker {
+        display: inline-flex;
+        min-height: 26px;
+        align-items: center;
+        border-radius: 999px;
+        padding: 4px 10px;
+        background: rgba(255, 255, 255, 0.18);
+        color: #e9fffb;
+        font-size: 12px;
+        font-weight: 900;
+        margin-bottom: 10px;
+      }
+
+      .medications-panel > .section-head h2,
+      .medications-panel > .section-head p {
+        color: #ffffff;
+      }
+
+      .panel-toolbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        gap: 12px;
+        align-items: end;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--line);
+        background: #dfeaf4;
+      }
+
+      .search-wrap {
+        display: grid;
+        gap: 7px;
+      }
+
+      .search-wrap input {
+        max-width: none;
+      }
+
+      .medication-form {
+        display: grid;
+        grid-template-columns: minmax(180px, 1.4fr) minmax(130px, 0.75fr);
+        gap: 14px;
+        padding: 22px;
+        border-bottom: 1px solid var(--line);
+        background:
+          linear-gradient(180deg, #f8fbff 0%, #eef6fb 100%);
+      }
+
+      .field-wide {
+        grid-column: 1 / -1;
+      }
+
+      .form-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        grid-column: 1 / -1;
+        gap: 12px;
+      }
+
+      .form-hint {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        grid-column: 1 / -1;
+      }
+
+      .quick-chip {
+        min-height: 34px;
+        border: 1px solid #b8cce0;
+        background: #12323a;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .agenda-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 18px 22px 0;
+      }
+
+      .agenda-head h3 {
+        font-size: 20px;
+      }
+
+      .agenda-count {
+        border-radius: 999px;
+        padding: 6px 10px;
+        background: #e0f2fe;
+        color: #075985;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .medications-panel > .status {
+        padding: 0 22px;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .section-head p,
+      .panel p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+        padding: 14px 22px 22px;
+      }
+
+      .item {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-left: 7px solid var(--teal);
+        border-radius: 8px;
+        padding: 16px;
+        background:
+          linear-gradient(120deg, rgba(6, 182, 212, 0.12), rgba(124, 58, 237, 0.06) 38%, transparent 74%),
+          #ffffff;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .item::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 90px;
+        height: 100%;
+        background: repeating-linear-gradient(135deg, rgba(37, 99, 235, 0.06) 0 1px, transparent 1px 12px);
+        pointer-events: none;
+      }
+
+      .item:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 28px rgba(23, 32, 42, 0.1);
+      }
+
+      .item:nth-child(3n + 1) {
+        border-left-color: var(--blue);
+      }
+
+      .item:nth-child(3n + 2) {
+        border-left-color: var(--amber);
+      }
+
+      .item-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .item-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .med-title {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 12px;
+        align-items: center;
+      }
+
+      .med-symbol {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        color: #ffffff;
+        font-weight: 900;
+      }
+
+      .item strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #12323a;
+        font-size: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .item-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .item-note {
+        position: relative;
+        z-index: 1;
+        margin-top: 12px;
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: #f8fafc;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 28px;
+        border-radius: 999px;
+        padding: 4px 10px;
+        background: #e0f2fe;
+        color: #075985;
+        font-weight: 800;
+        position: relative;
+        z-index: 1;
+      }
+
+      .pill-dose {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .pill-muted {
+        background: #eef2ff;
+        color: #4338ca;
+      }
+
+      .pill-done {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .taken-button {
+        position: relative;
+        z-index: 1;
+        min-height: 40px;
+        border: 1px solid #86efac;
+        background: linear-gradient(135deg, #16a34a, #0f766e);
+        color: #ffffff;
+        box-shadow: 0 10px 18px rgba(22, 163, 74, 0.2);
+      }
+
+      .taken-button.is-done {
+        border-color: #b8cce0;
+        background: #ffffff;
+        color: #166534;
+        box-shadow: none;
+      }
+
+      .danger {
+        min-height: 40px;
+        border: 1px solid #fecdd3;
+        background: #ffffff;
+        color: #be123c;
+        box-shadow: 0 10px 18px rgba(225, 29, 72, 0.1);
+      }
+
+      .action-icon {
+        display: inline-grid;
+        width: 20px;
+        height: 20px;
+        place-items: center;
+        margin-right: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.2);
+        font-weight: 900;
+      }
+
+      .danger .action-icon {
+        background: #ffe4e9;
+      }
+
+      .side-title {
+        margin-bottom: 14px;
+      }
+
+      .side-title h2 {
+        margin-bottom: 4px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        border: 1px solid #dbe6f1;
+        border-radius: 8px;
+        padding: 10px;
+        background: #ffffff;
+      }
+
+      .timeline-time {
+        border-radius: 8px;
+        padding: 6px;
+        background: #e0f2fe;
+        color: #075985;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .timeline-name {
+        display: block;
+        color: #12323a;
+        font-weight: 900;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .timeline-dose {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .delivery-panel {
+        margin-top: 16px;
+        border-top: 1px solid #dbe6f1;
+        padding-top: 16px;
+      }
+
+      .delivery-summary {
+        display: grid;
+        gap: 10px;
+        margin: 12px 0 14px;
+      }
+
+      .delivery-step {
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        border: 1px solid #dbe6f1;
+        border-radius: 8px;
+        padding: 10px;
+        background: #ffffff;
+      }
+
+      .delivery-step strong {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 8px;
+        background: #e0f2fe;
+        color: #075985;
+      }
+
+      .delivery-step span {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .delivery-result-title {
+        display: block;
+        margin-bottom: 6px;
+        color: #12323a;
+        font-weight: 900;
+      }
+
+      .board {
+        grid-template-columns: minmax(250px, 0.95fr) minmax(360px, 1.35fr) minmax(280px, 1fr);
+        align-items: start;
+      }
+
+      .medications-panel,
+      .agenda-panel,
+      .insights-panel {
+        overflow: hidden;
+        border-color: rgba(18, 50, 58, 0.14);
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(16px);
+      }
+
+      .medications-panel > .section-head {
+        background: #ffffff;
+        color: var(--ink);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .medications-panel > .section-head h2,
+      .medications-panel > .section-head p {
+        color: var(--ink);
+      }
+
+      .section-kicker {
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(15, 118, 110, 0.18);
+      }
+
+      .panel-toolbar {
+        grid-template-columns: 1fr auto;
+        background: #ffffff;
+      }
+
+      .medication-form {
+        grid-template-columns: 1fr 0.72fr;
+        background: #ffffff;
+      }
+
+      .quick-chip {
+        background: #e0f2fe;
+        color: #075985;
+      }
+
+      .agenda-panel {
+        padding: 0;
+      }
+
+      .agenda-top {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 20px 20px 12px;
+      }
+
+      .agenda-top p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .view-tabs {
+        display: flex;
+        gap: 6px;
+        border-radius: 8px;
+        padding: 4px;
+        background: #e8eef5;
+      }
+
+      .view-tab {
+        min-height: 32px;
+        border-radius: 7px;
+        padding: 6px 10px;
+        background: transparent;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .view-tab.is-active {
+        background: var(--teal);
+        color: #ffffff;
+      }
+
+      .period-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        padding: 0 20px 16px;
+      }
+
+      .period-card {
+        min-height: 92px;
+        border: 1px solid #dbe6f1;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 10px 22px rgba(16, 32, 51, 0.08);
+      }
+
+      .period-card strong,
+      .period-card span {
+        display: block;
+      }
+
+      .period-card strong {
+        color: #12323a;
+      }
+
+      .period-card span {
+        margin-top: 7px;
+        color: #475569;
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .morning {
+        background: #e0f2fe;
+      }
+
+      .lunch {
+        background: #ecfdf5;
+      }
+
+      .night {
+        background: #fff7ed;
+      }
+
+      .insights-panel {
+        padding: 18px;
+      }
+
+      .mini-chart {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: end;
+        gap: 6px;
+        height: 70px;
+        margin-top: 14px;
+        padding: 10px;
+        border-radius: 8px;
+        background: #e0f2fe;
+      }
+
+      .mini-chart span {
+        display: block;
+        border-radius: 999px 999px 4px 4px;
+        background: linear-gradient(180deg, var(--teal), var(--blue));
+      }
+
+      .mini-chart span:nth-child(1) { height: 34%; }
+      .mini-chart span:nth-child(2) { height: 55%; }
+      .mini-chart span:nth-child(3) { height: 42%; }
+      .mini-chart span:nth-child(4) { height: 76%; }
+      .mini-chart span:nth-child(5) { height: 88%; }
+
+      .score-track {
+        height: 9px;
+        margin: 12px 0 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #dbe6f1;
+      }
+
+      #score-fill {
+        display: block;
+        width: 0%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--teal), var(--blue));
+        transition: width 0.2s ease;
+      }
+
+      .score-label {
+        color: #64748b;
+        font-size: 12px;
+      }
+
+      .item p {
+        margin: 9px 0 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .empty,
+      .status {
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .status {
+        min-height: 24px;
+        margin-top: 12px;
+        font-weight: 800;
+      }
+
+      .success {
+        color: var(--green);
+      }
+
+      .error {
+        color: var(--rose);
+      }
+
+      .notice {
+        border: 0;
+        border-left: 6px solid var(--amber);
+        background: linear-gradient(135deg, #12323a, #164e63);
+        color: #ffffff;
+      }
+
+      .notice h3,
+      .notice p {
+        color: #ffffff;
+      }
+
+      .address {
+        margin-top: 14px;
+        border: 1px solid #b8cce0;
+        border-radius: 8px;
+        padding: 14px;
+        background: #f8fbff;
+        line-height: 1.6;
+      }
+
+      .locked {
+        display: grid;
+        min-height: 260px;
+        place-items: center;
+        text-align: center;
+      }
+
+      .locked strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 22px;
+      }
+
+      .side-card {
+        margin-bottom: 16px;
+        border: 1px solid #b8cce0;
+        border-radius: 8px;
+        padding: 14px;
+        background:
+          linear-gradient(135deg, rgba(15, 118, 110, 0.09), rgba(37, 99, 235, 0.08)),
+          #ffffff;
+      }
+
+      .side-card strong {
+        display: block;
+        color: #12323a;
+        font-size: 18px;
+      }
+
+      .side-card span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      /* Desktop polish: compact header, less white, more product-like panels. */
+      body {
+        background:
+          linear-gradient(135deg, rgba(15, 118, 110, 0.13), transparent 28%),
+          linear-gradient(220deg, rgba(37, 99, 235, 0.13), transparent 30%),
+          #eef5f3;
+      }
+
+      header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+        overflow: visible;
+        padding: 18px 24px 22px;
+        background:
+          linear-gradient(120deg, #082f36 0%, #0f766e 48%, #2563eb 100%),
+          repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 18px);
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+      }
+
+      header::after {
+        height: 3px;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+      }
+
+      .brand-mark::before {
+        width: 19px;
+        height: 7px;
+      }
+
+      .brand-mark::after {
+        width: 7px;
+        height: 19px;
+      }
+
+      .profile-button {
+        min-width: 286px;
+        min-height: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.34);
+        border-radius: 999px;
+        padding: 6px 10px 6px 6px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.14)),
+          rgba(255, 255, 255, 0.16);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.42),
+          0 14px 34px rgba(3, 15, 26, 0.2);
+        backdrop-filter: blur(16px);
+      }
+
+      .profile-button:hover {
+        transform: translateY(-1px);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.18)),
+          rgba(255, 255, 255, 0.18);
+      }
+
+      .avatar {
+        width: 38px;
+        height: 38px;
+        border: 2px solid rgba(255, 255, 255, 0.88);
+        border-radius: 999px;
+        background: linear-gradient(135deg, #ffffff, #dff8ff);
+        color: var(--teal);
+        font-size: 12px;
+        letter-spacing: 0;
+        box-shadow: 0 8px 18px rgba(3, 15, 26, 0.2);
+      }
+
+      .profile-text {
+        display: grid;
+        flex: 1;
+        gap: 2px;
+        min-width: 0;
+      }
+
+      .profile-name {
+        max-width: 178px;
+        color: #ffffff;
+        font-size: 14px;
+        line-height: 1.1;
+        text-shadow: 0 1px 12px rgba(3, 15, 26, 0.24);
+      }
+
+      .profile-email {
+        max-width: 202px;
+        color: rgba(239, 253, 255, 0.9);
+        font-size: 11px;
+        line-height: 1.1;
+      }
+
+      .chevron {
+        display: grid;
+        width: 22px;
+        height: 22px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .chevron::before {
+        width: 7px;
+        height: 7px;
+        border-right: 2px solid rgba(255, 255, 255, 0.9);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px) rotate(45deg);
+        content: "";
+      }
+
+      .profile-menu {
+        top: calc(100% + 12px);
+        z-index: 100;
+        width: 328px;
+        border: 1px solid rgba(15, 118, 110, 0.16);
+        border-radius: 18px;
+        padding: 14px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(238, 250, 247, 0.98));
+        box-shadow: 0 22px 54px rgba(3, 15, 26, 0.2);
+      }
+
+      .profile-menu::before {
+        position: absolute;
+        top: -7px;
+        right: 28px;
+        width: 14px;
+        height: 14px;
+        border-left: 1px solid rgba(15, 118, 110, 0.12);
+        border-top: 1px solid rgba(15, 118, 110, 0.12);
+        background: #ffffff;
+        transform: rotate(45deg);
+        content: "";
+      }
+
+      .menu-head {
+        grid-template-columns: 52px minmax(0, 1fr);
+        border-bottom: 1px solid #dce8e5;
+        padding-bottom: 14px;
+      }
+
+      .menu-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        color: #ffffff;
+        box-shadow: 0 12px 24px rgba(15, 118, 110, 0.22);
+      }
+
+      .menu-status {
+        border: 1px solid #bbf7d0;
+        border-radius: 14px;
+        background: #ecfdf5;
+      }
+
+      .logout-button {
+        min-height: 42px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #ffe4e9, #fff1f2);
+      }
+
+      .hero {
+        padding-top: 30px;
+      }
+
+      h1 {
+        font-size: clamp(32px, 3.4vw, 54px);
+        line-height: 1.02;
+      }
+
+      .hero p {
+        max-width: 720px;
+        margin-top: 10px;
+        color: #dff8ff;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      main {
+        padding: 16px 24px 36px;
+      }
+
+      .app-shell {
+        gap: 14px;
+      }
+
+      .app-nav {
+        border-color: rgba(15, 118, 110, 0.18);
+        border-radius: 14px;
+        padding: 8px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(226, 245, 241, 0.9));
+        box-shadow: 0 14px 32px rgba(16, 32, 51, 0.1);
+      }
+
+      .nav-button {
+        min-height: 38px;
+        border-radius: 10px;
+        color: #31525d;
+        font-size: 14px;
+      }
+
+      .nav-button:nth-child(2) {
+        background: #e0f2fe;
+        color: #075985;
+      }
+
+      .nav-button:nth-child(3) {
+        background: #ecfdf5;
+        color: #166534;
+      }
+
+      .nav-button:nth-child(4) {
+        background: #fff7ed;
+        color: #9a3412;
+      }
+
+      .nav-button.is-active {
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        color: #ffffff;
+      }
+
+      .app-page.is-active.medications-panel,
+      .app-page.is-active.agenda-panel,
+      .app-page.is-active.insights-panel {
+        min-height: calc(100vh - 240px);
+      }
+
+      section,
+      .panel,
+      .medications-panel,
+      .agenda-panel,
+      .insights-panel {
+        border-radius: 16px;
+        box-shadow: 0 16px 36px rgba(16, 32, 51, 0.1);
+      }
+
+      .medications-panel,
+      .agenda-panel,
+      .insights-panel {
+        border-color: rgba(15, 118, 110, 0.16);
+        background:
+          linear-gradient(135deg, rgba(232, 245, 251, 0.75), rgba(236, 253, 245, 0.72)),
+          rgba(255, 255, 255, 0.9);
+      }
+
+      .medications-panel > .section-head {
+        padding: 16px 18px 12px;
+        background: linear-gradient(135deg, #e0f2fe, #dff7ef);
+      }
+
+      .medications-panel > .section-head h2,
+      .medications-panel > .section-head p {
+        color: #12323a;
+      }
+
+      .section-kicker {
+        min-height: 24px;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, var(--teal), #0891b2);
+        color: #ffffff;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      .panel-toolbar {
+        padding: 14px 18px;
+        background: linear-gradient(135deg, #eff6ff, #e0f2fe);
+      }
+
+      .medication-form {
+        gap: 12px;
+        padding: 16px 18px;
+        background: linear-gradient(135deg, #ffffff, #f0fdf4);
+      }
+
+      input {
+        min-height: 40px;
+      }
+
+      textarea {
+        min-height: 70px;
+      }
+
+      .list {
+        padding: 12px 18px 18px;
+      }
+
+      .item {
+        border-radius: 14px;
+        padding: 14px;
+        background:
+          linear-gradient(120deg, rgba(14, 165, 233, 0.12), rgba(22, 163, 74, 0.1) 46%, rgba(245, 158, 11, 0.08)),
+          #ffffff;
+      }
+
+      .agenda-top {
+        padding: 16px 18px 10px;
+        background: linear-gradient(135deg, #eff6ff, #ecfdf5);
+      }
+
+      .period-grid {
+        padding: 0 18px 14px;
+      }
+
+      .period-card {
+        border-radius: 14px;
+      }
+
+      .insights-panel {
+        background:
+          linear-gradient(135deg, rgba(224, 242, 254, 0.85), rgba(255, 247, 237, 0.84)),
+          #ffffff;
+      }
+
+      .side-card {
+        border-radius: 14px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(224, 242, 254, 0.74)),
+          #ffffff;
+      }
+
+      .status {
+        margin: 12px 18px;
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: rgba(255, 255, 255, 0.68);
+      }
+
+      .status:empty {
+        display: none;
+      }
+
+      .status.success {
+        border: 1px solid rgba(22, 163, 74, 0.22);
+        background: #ecfdf5;
+      }
+
+      .status.error {
+        border: 1px solid rgba(220, 38, 38, 0.2);
+        background: #fff1f2;
+      }
+
+      .report-toolbar {
+        display: inline-flex;
+        gap: 6px;
+        margin: 0 0 16px;
+        border-radius: 999px;
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.74);
+      }
+
+      .report-filter {
+        min-height: 34px;
+        border-radius: 999px;
+        background: transparent;
+        color: #31525d;
+        font-size: 13px;
+      }
+
+      .report-filter.is-active {
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        color: #ffffff;
+      }
+
+      .report-grid,
+      .delivery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .metric-card,
+      .delivery-card {
+        border: 1px solid rgba(15, 118, 110, 0.16);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 14px 28px rgba(16, 32, 51, 0.08);
+      }
+
+      .metric-card span,
+      .metric-card small,
+      .card-label {
+        display: block;
+        color: #547072;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .metric-card strong {
+        display: block;
+        margin: 7px 0 2px;
+        color: #102033;
+        font-size: 34px;
+        line-height: 1;
+      }
+
+      .metric-teal {
+        background: linear-gradient(135deg, #dff7ef, #e0f2fe);
+      }
+
+      .metric-green {
+        background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+      }
+
+      .metric-amber {
+        background: linear-gradient(135deg, #fff7ed, #fef3c7);
+      }
+
+      .insight-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.85fr);
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .featured-report {
+        grid-row: span 2;
+      }
+
+      .card-label {
+        margin-bottom: 8px;
+        color: var(--teal);
+      }
+
+      .mini-chart {
+        height: 118px;
+      }
+
+      .mini-chart span {
+        transition: height 0.22s ease, opacity 0.22s ease;
+      }
+
+      .delivery-grid {
+        grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr) minmax(240px, 0.72fr);
+      }
+
+      .delivery-card {
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(224, 242, 254, 0.76)),
+          #ffffff;
+      }
+
+      .delivery-card p {
+        margin: 8px 0 14px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .cep-presets {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: -4px 0 12px;
+      }
+
+      .cep-presets button {
+        min-height: 32px;
+        border: 1px solid #bfdbfe;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 12px;
+      }
+
+      .delivery-plan {
+        background: linear-gradient(135deg, #ecfdf5, #e0f2fe);
+      }
+
+      .delivery-stock {
+        background: linear-gradient(135deg, #fff7ed, #ffffff);
+      }
+
+      .check-row {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        margin: 12px 0 0;
+        border-radius: 12px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.72);
+        color: #31525d;
+      }
+
+      .check-row input {
+        width: 18px;
+        min-height: 18px;
+        accent-color: var(--teal);
+      }
+
+      @media (max-width: 980px) {
+        main {
+          transform: none;
+        }
+
+        .report-grid,
+        .delivery-grid,
+        .insight-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .featured-report {
+          grid-row: auto;
+        }
+      }
+
+      @media (max-width: 640px) {
+        header {
+          padding: 16px 14px 22px;
+        }
+
+        main {
+          transform: none;
+          padding: 14px 12px 28px;
+        }
+
+        .topbar,
+        .session,
+        .section-head,
+        .item-header {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .hero {
+          padding-top: 24px;
+        }
+
+        h1 {
+          font-size: 32px;
+        }
+
+        .hero p {
+          font-size: 14px;
+        }
+
+        .profile-name,
+        .profile-email {
+          max-width: 100%;
+        }
+
+        button {
+          width: 100%;
+        }
+
+        .item,
+        section {
+          min-width: 0;
+        }
+
+        .item-header {
+          gap: 10px;
+        }
+
+        .nav-button {
+          flex: auto;
+          min-width: 0;
+        }
+
+        .app-nav {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .panel-toolbar,
+        .medication-form {
+          grid-template-columns: 1fr;
+        }
+
+        .report-toolbar {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          width: 100%;
+        }
+
+        .metric-card strong {
+          font-size: 28px;
+        }
+
+        .form-footer,
+        .agenda-head {
+          align-items: stretch;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="topbar">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true">+</span>
+            <span>MedSync</span>
+          </div>
+          <div class="session" id="session">
+            <button class="profile-button" id="profile-button" type="button" aria-expanded="false" aria-controls="profile-menu">
+              <span class="avatar" id="profile-avatar" aria-hidden="true">--</span>
+              <span class="profile-text">
+                <span class="profile-row">
+                  <span class="profile-name" id="profile-name"></span>
+                  <span class="profile-dot" aria-hidden="true"></span>
+                </span>
+                <span class="profile-email" id="profile-email"></span>
+              </span>
+              <span class="chevron" aria-hidden="true"></span>
+            </button>
+            <div class="profile-menu" id="profile-menu">
+              <div class="menu-head">
+                <span class="menu-avatar" id="menu-avatar" aria-hidden="true">--</span>
+                <span>
+                  <span class="menu-name" id="menu-name"></span>
+                  <span class="menu-email" id="menu-email"></span>
+                </span>
+              </div>
+              <div class="menu-status">
+                <span>Conta conectada</span>
+                <span>Online</span>
+              </div>
+              <div class="menu-mini-grid" aria-hidden="true">
+                <span>Agenda privada</span>
+                <span>Dados salvos</span>
+              </div>
+              <button class="logout-button" id="logout-button" type="button">Sair da conta</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero">
+          <div>
+            <h1>Painel de medicamentos.</h1>
+            <p>
+              Organize remedios, horarios, doses, observacoes e consulta de
+              entrega em uma area privada da sua conta.
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="dashboard" id="dashboard-view" aria-label="Painel MedSync">
+        <div class="app-shell">
+          <nav class="app-nav" aria-label="Navegacao do aplicativo">
+            <button class="nav-button is-active" type="button" data-page="medications-page">Medicamentos</button>
+            <button class="nav-button" type="button" data-page="agenda-page">Agenda</button>
+            <button class="nav-button" type="button" data-page="delivery-page">Reposicao</button>
+            <button class="nav-button" type="button" data-page="reports-page">Relatorios</button>
+          </nav>
+
+          <div class="app-content">
+          <section class="app-page is-active medications-panel" id="medications-page" aria-labelledby="medicamentos-title">
+            <div class="section-head">
+              <div>
+                <span class="section-kicker">+ Novo Medicamento</span>
+                <h2 id="medicamentos-title">Medicamentos</h2>
+              </div>
+            </div>
+
+            <div class="panel-toolbar">
+              <div class="search-wrap">
+                <label for="medication-search">Buscar na agenda</label>
+                <input id="medication-search" placeholder="Pesquise por nome, dose ou observacao">
+              </div>
+              <button class="secondary" id="clear-medications" type="button">Limpar agenda</button>
+            </div>
+
+            <form class="medication-form" id="medication-form">
+              <div class="quick-actions" aria-label="Sugestoes rapidas">
+                <button class="quick-chip" type="button" data-time="08:00">Manha 08:00</button>
+                <button class="quick-chip" type="button" data-time="12:00">Almoco 12:00</button>
+                <button class="quick-chip" type="button" data-time="20:00">Noite 20:00</button>
+              </div>
+              <div class="field">
+                <label for="medication-name">Nome do remedio</label>
+                <input id="medication-name" name="name" list="medicine-suggestions" placeholder="Ex: Aspirina" required>
+                <datalist id="medicine-suggestions">
+                  <option value="Dipirona">
+                  <option value="Paracetamol">
+                  <option value="Ibuprofeno">
+                  <option value="Amoxicilina">
+                  <option value="Losartana">
+                  <option value="Metformina">
+                </datalist>
+              </div>
+              <div class="field">
+                <label for="medication-time">Horario</label>
+                <input id="medication-time" name="time" type="time" required>
+              </div>
+              <div class="field">
+                <label for="medication-dose">Dose</label>
+                <input id="medication-dose" name="dose" placeholder="Ex: 500mg, 1 comprimido">
+              </div>
+              <div class="field field-wide">
+                <label for="medication-note">Como tomar</label>
+                <textarea id="medication-note" name="note" placeholder="Ex: tomar depois do almoco, evitar jejum, beber agua"></textarea>
+              </div>
+              <div class="form-footer">
+                <button class="primary" type="submit">Salvar na agenda</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="app-page agenda-panel" id="agenda-page" aria-labelledby="agenda-title">
+            <div class="agenda-top">
+              <div>
+                <h2 id="agenda-title">Agenda do dia</h2>
+                <p>Organize as doses por periodo e registre o que ja foi tomado.</p>
+              </div>
+              <div class="view-tabs" role="tablist" aria-label="Periodo da agenda">
+                <button class="view-tab is-active" type="button" data-period="day">Dia</button>
+                <button class="view-tab" type="button" data-period="week">Semana</button>
+                <button class="view-tab" type="button" data-period="month">Mes</button>
+              </div>
+            </div>
+            <div class="period-grid" aria-label="Resumo por periodo">
+              <div class="period-card morning">
+                <strong>Manha</strong>
+                <span id="period-morning">0 medicamentos</span>
+              </div>
+              <div class="period-card lunch">
+                <strong>Almoco</strong>
+                <span id="period-lunch">0 medicamentos</span>
+              </div>
+              <div class="period-card night">
+                <strong>Noite</strong>
+                <span id="period-night">0 medicamentos</span>
+              </div>
+            </div>
+            <div class="status" id="medication-status" aria-live="polite"></div>
+            <div class="agenda-head">
+              <h3 id="agenda-list-title">Agenda do dia</h3>
+              <span class="agenda-count" id="agenda-count">0 itens</span>
+            </div>
+            <div class="list" id="medication-list"></div>
+          </section>
+
+          <section class="app-page insights-panel" id="reports-page" aria-labelledby="reports-title">
+            <div class="side-title">
+              <h2 id="reports-title">Resumo do tratamento</h2>
+              <p>Acompanhe a rotina, o registro do dia e a qualidade dos dados cadastrados.</p>
+            </div>
+
+            <div class="report-toolbar" aria-label="Periodo do relatorio">
+              <button class="report-filter is-active" type="button" data-report-range="day">Hoje</button>
+              <button class="report-filter" type="button" data-report-range="week">Semana</button>
+              <button class="report-filter" type="button" data-report-range="month">Mes</button>
+            </div>
+
+            <div class="report-grid">
+              <div class="metric-card metric-teal">
+                <span>Total</span>
+                <strong id="report-total">0</strong>
+                <small id="report-total-label">medicamentos ativos hoje</small>
+              </div>
+              <div class="metric-card metric-green">
+                <span>Tomados</span>
+                <strong id="report-taken">0</strong>
+                <small id="report-taken-label">registrados hoje</small>
+              </div>
+              <div class="metric-card metric-amber">
+                <span>Pendentes</span>
+                <strong id="report-pending">0</strong>
+                <small id="report-pending-label">aguardando hoje</small>
+              </div>
+            </div>
+
+            <div class="insight-layout">
+              <div class="side-card featured-report">
+                <span class="card-label">Proxima dose</span>
+                <strong id="next-medication-name">Sem proximo remedio</strong>
+                <span id="next-medication-detail">Cadastre um horario para acompanhar a proxima dose.</span>
+                <div class="mini-chart" id="mini-chart" aria-label="Distribuicao semanal">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+
+              <div class="side-card">
+                <span class="card-label">Agenda</span>
+                <strong>Proximos horarios</strong>
+                <div class="timeline" id="timeline-list"></div>
+              </div>
+
+              <div class="side-card">
+                <span class="card-label">Seguranca</span>
+                <strong>Verificacao de interacoes</strong>
+                <span id="interaction-summary">Nenhuma combinacao de risco identificada nos itens cadastrados.</span>
+              </div>
+
+              <div class="side-card score-card">
+                <span class="card-label">Organizacao</span>
+                <strong>Sua pontuacao de saude</strong>
+                <span id="health-score">Medicamentos organizados: 0%</span>
+                <div class="score-track"><span id="score-fill"></span></div>
+                <span class="score-label">Nivel de acompanhamento</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="app-page insights-panel" id="delivery-page" aria-labelledby="cep-title">
+            <div class="side-title">
+              <h2 id="cep-title">Entrega de reposicao</h2>
+              <p>Planeje compra, retirada ou entrega dos medicamentos antes de acabar.</p>
+            </div>
+
+            <div class="delivery-grid">
+              <div class="delivery-card">
+                <span class="card-label">Endereco</span>
+                <strong>Validar local de entrega</strong>
+                <p>Use o CEP para simular a area de reposicao e organizar retirada ou entrega.</p>
+                <form id="cep-form">
+                  <div class="field">
+                    <label for="cep">CEP para reposicao</label>
+                    <input id="cep" name="cep" inputmode="numeric" maxlength="9" placeholder="Ex: 01001-000" required>
+                  </div>
+                  <div class="cep-presets" aria-label="CEPs rapidos">
+                    <button type="button" data-cep="01001000">SP centro</button>
+                    <button type="button" data-cep="20040002">RJ centro</button>
+                    <button type="button" data-cep="30140071">BH centro</button>
+                  </div>
+                  <button class="success-button" type="submit">Validar endereco</button>
+                </form>
+                <div class="status" id="cep-status" aria-live="polite"></div>
+                <div class="address" id="address-result">
+                  <span class="delivery-result-title">Endereco de reposicao</span>
+                  Nenhum endereco validado ainda.
+                </div>
+              </div>
+
+              <div class="delivery-card delivery-plan">
+                <span class="card-label">Plano</span>
+                <strong>Como funciona</strong>
+                <div class="delivery-summary" aria-label="Fluxo de reposicao">
+                  <div class="delivery-step">
+                    <strong>1</strong>
+                    <span>Confirme o CEP e veja o endereco base.</span>
+                  </div>
+                  <div class="delivery-step">
+                    <strong>2</strong>
+                    <span>Confira a proxima dose no relatorio.</span>
+                  </div>
+                  <div class="delivery-step">
+                    <strong>3</strong>
+                    <span>Separe retirada, entrega ou compra online.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="delivery-card delivery-stock">
+                <span class="card-label">Reposicao</span>
+                <strong>Checklist rapido</strong>
+                <label class="check-row"><input type="checkbox"> Conferir quantidade restante</label>
+                <label class="check-row"><input type="checkbox"> Separar receita ou orientacao</label>
+                <label class="check-row"><input type="checkbox"> Confirmar forma de retirada</label>
+              </div>
+            </div>
+          </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const apiUrl = "/api/medications";
+      const authUrl = "/api/auth";
+      const storageKeys = {
+        token: "medsync-token",
+        user: "medsync-user",
+        medications: "medsync-medications",
+        localUsers: "medsync-local-users",
+      };
+
+      const session = document.querySelector("#session");
+      const profileButton = document.querySelector("#profile-button");
+      const profileMenu = document.querySelector("#profile-menu");
+      const profileAvatar = document.querySelector("#profile-avatar");
+      const profileName = document.querySelector("#profile-name");
+      const profileEmail = document.querySelector("#profile-email");
+      const menuAvatar = document.querySelector("#menu-avatar");
+      const menuName = document.querySelector("#menu-name");
+      const menuEmail = document.querySelector("#menu-email");
+      const logoutButton = document.querySelector("#logout-button");
+      const medicationForm = document.querySelector("#medication-form");
+      const medicationName = document.querySelector("#medication-name");
+      const medicationTime = document.querySelector("#medication-time");
+      const medicationDose = document.querySelector("#medication-dose");
+      const medicationNote = document.querySelector("#medication-note");
+      const medicationSearch = document.querySelector("#medication-search");
+      const medicationStatus = document.querySelector("#medication-status");
+      const medicationList = document.querySelector("#medication-list");
+      const agendaCount = document.querySelector("#agenda-count");
+      const agendaTitle = document.querySelector("#agenda-title");
+      const agendaListTitle = document.querySelector("#agenda-list-title");
+      const clearMedications = document.querySelector("#clear-medications");
+      const quickChips = [...document.querySelectorAll(".quick-chip")];
+      const viewTabs = [...document.querySelectorAll(".view-tab")];
+      const navButtons = [...document.querySelectorAll(".nav-button")];
+      const appPages = [...document.querySelectorAll(".app-page")];
+      const cepForm = document.querySelector("#cep-form");
+      const cepInput = document.querySelector("#cep");
+      const cepStatus = document.querySelector("#cep-status");
+      const addressResult = document.querySelector("#address-result");
+      const nextMedicationName = document.querySelector("#next-medication-name");
+      const nextMedicationDetail = document.querySelector("#next-medication-detail");
+      const timelineList = document.querySelector("#timeline-list");
+      const periodMorning = document.querySelector("#period-morning");
+      const periodLunch = document.querySelector("#period-lunch");
+      const periodNight = document.querySelector("#period-night");
+      const interactionSummary = document.querySelector("#interaction-summary");
+      const healthScore = document.querySelector("#health-score");
+      const scoreFill = document.querySelector("#score-fill");
+      const reportTotal = document.querySelector("#report-total");
+      const reportTaken = document.querySelector("#report-taken");
+      const reportPending = document.querySelector("#report-pending");
+      const reportTotalLabel = document.querySelector("#report-total-label");
+      const reportTakenLabel = document.querySelector("#report-taken-label");
+      const reportPendingLabel = document.querySelector("#report-pending-label");
+      const reportFilters = [...document.querySelectorAll(".report-filter")];
+      const chartBars = [...document.querySelectorAll("#mini-chart span")];
+      const cepPresets = [...document.querySelectorAll("[data-cep]")];
+
+      let medications = [];
+      let currentUser = readJson(storageKeys.user);
+      let authToken = localStorage.getItem(storageKeys.token) || "";
+      let usingLocalStorage = false;
+      let agendaPeriod = "day";
+      let reportChartValues = [0, 0, 0, 0, 0];
+      let reportStats = { total: 0, taken: 0, pending: 0 };
+
+      function readJson(key, fallback = null) {
+        try {
+          return JSON.parse(localStorage.getItem(key) || "null") || fallback;
+        } catch (error) {
+          return fallback;
+        }
+      }
+
+      function writeJson(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+
+      function setStatus(element, message, type) {
+        element.textContent = message;
+        element.className = `status ${type || ""}`;
+      }
+
+      function setMode(message, mode) {}
+
+      function onlyDigits(value) {
+        return value.replace(/\D/g, "");
+      }
+
+      function localMedicationKey() {
+        return `${storageKeys.medications}:${currentUser ? currentUser.email : "guest"}`;
+      }
+
+      function todayKey() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function takenKey() {
+        return `medsync-taken:${currentUser ? currentUser.email : "guest"}:${todayKey()}`;
+      }
+
+      function readTaken() {
+        return readJson(takenKey(), {});
+      }
+
+      function saveTaken(taken) {
+        writeJson(takenKey(), taken);
+      }
+
+      function isMedicationTaken(id) {
+        return Boolean(readTaken()[id]);
+      }
+
+      function toggleTaken(id) {
+        const taken = readTaken();
+        if (taken[id]) {
+          delete taken[id];
+        } else {
+          taken[id] = new Date().toISOString();
+        }
+        saveTaken(taken);
+        renderMedications();
+      }
+
+      function readLocalMedications() {
+        return readJson(localMedicationKey(), []).map((medication) => ({
+          id: medication.id || crypto.randomUUID(),
+          name: medication.name,
+          time: medication.time,
+          dose: medication.dose || "",
+          note: medication.note || "",
+        }));
+      }
+
+      function saveLocalMedications() {
+        writeJson(localMedicationKey(), medications);
+      }
+
+      function sortMedications() {
+        medications.sort((a, b) => a.time.localeCompare(b.time) || a.name.localeCompare(b.name));
+      }
+
+      function periodInfo() {
+        const options = {
+          day: { title: "Agenda do dia", label: "hoje", multiplier: 1 },
+          week: { title: "Agenda da semana", label: "na semana", multiplier: 7 },
+          month: { title: "Agenda do mes", label: "no mes", multiplier: 30 },
+        };
+        return options[agendaPeriod] || options.day;
+      }
+
+      function reportRangeInfo() {
+        const active = document.querySelector(".report-filter.is-active");
+        const range = active ? active.dataset.reportRange : "day";
+        const options = {
+          day: { label: "hoje", multiplier: 1 },
+          week: { label: "na semana", multiplier: 7 },
+          month: { label: "no mes", multiplier: 30 },
+        };
+        return options[range] || options.day;
+      }
+
+      function updateAuthUi() {
+        const logged = Boolean(currentUser);
+        const initials = logged
+          ? currentUser.name
+              .split(" ")
+              .filter(Boolean)
+              .slice(0, 2)
+              .map((part) => part[0])
+              .join("")
+              .toUpperCase()
+          : "--";
+
+        session.classList.toggle("is-visible", logged);
+        profileAvatar.textContent = initials;
+        profileName.textContent = logged ? currentUser.name : "";
+        profileEmail.textContent = logged ? currentUser.email : "";
+        menuAvatar.textContent = initials;
+        menuName.textContent = logged ? currentUser.name : "";
+        menuEmail.textContent = logged ? currentUser.email : "";
+      }
+
+      async function requestJson(url, options = {}) {
+        const response = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+          },
+          ...options,
+        });
+        let data = {};
+        try {
+          data = await response.json();
+        } catch (error) {
+          throw new Error("Nao foi possivel carregar seus dados agora.");
+        }
+        if (!response.ok) {
+          throw new Error(data.error || "Nao foi possivel carregar seus dados agora.");
+        }
+        return data;
+      }
+
+      async function validateSession() {
+        updateAuthUi();
+        if (!authToken || !currentUser || authToken.startsWith("local-")) {
+          usingLocalStorage = authToken.startsWith("local-");
+          if (currentUser) {
+            setMode("", "OK");
+            await loadMedications();
+          } else {
+            window.location.replace("/login");
+          }
+          return;
+        }
+
+        try {
+          const data = await requestJson(`${authUrl}/me`);
+          currentUser = data.user;
+          writeJson(storageKeys.user, currentUser);
+          usingLocalStorage = false;
+          updateAuthUi();
+          setMode("", "OK");
+          await loadMedications();
+        } catch (error) {
+          localStorage.removeItem(storageKeys.token);
+          localStorage.removeItem(storageKeys.user);
+          currentUser = null;
+          authToken = "";
+          updateAuthUi();
+          renderLocked();
+          setMode("", "--");
+          window.location.replace("/login");
+        }
+      }
+
+      async function loadMedications() {
+        if (!currentUser) {
+          renderLocked();
+          return;
+        }
+
+        try {
+          if (usingLocalStorage) {
+            throw new Error("local");
+          }
+          const data = await requestJson(apiUrl);
+          medications = data.medications;
+          sortMedications();
+          renderMedications();
+          setStatus(medicationStatus, "Medicamentos carregados com sucesso.", "success");
+        } catch (error) {
+          usingLocalStorage = true;
+          medications = readLocalMedications();
+          sortMedications();
+          saveLocalMedications();
+          renderMedications();
+          setMode("", "Offline");
+          setStatus(medicationStatus, "Mostrando a ultima agenda disponivel.", "error");
+        }
+      }
+
+      function renderLocked() {
+        medications = [];
+        agendaCount.textContent = "0 itens";
+        medicationList.innerHTML = '<div class="locked"><div><strong>Entre para ver sua agenda</strong><span class="empty">Seu painel aparece aqui depois do login.</span></div></div>';
+        medicationForm.reset();
+        updateStats();
+      }
+
+      function renderMedications() {
+        medicationList.innerHTML = "";
+        const search = medicationSearch.value.trim().toLowerCase();
+        const visibleMedications = medications.filter((medication) =>
+          [medication.name, medication.time, medication.dose, medication.note]
+            .join(" ")
+            .toLowerCase()
+            .includes(search)
+        );
+
+        const period = periodInfo();
+        const projectedCount = visibleMedications.length * period.multiplier;
+        agendaTitle.textContent = period.title;
+        agendaListTitle.textContent = period.title;
+        agendaCount.textContent = `${projectedCount} ${projectedCount === 1 ? "item" : "itens"} ${period.label}`;
+
+        if (medications.length === 0) {
+          medicationList.innerHTML = '<p class="empty">Nenhum medicamento agendado. Cadastre o primeiro item da rotina.</p>';
+          updateStats();
+          return;
+        }
+
+        if (visibleMedications.length === 0) {
+          medicationList.innerHTML = '<p class="empty">Nenhum medicamento encontrado para essa busca.</p>';
+          updateStats();
+          return;
+        }
+
+        visibleMedications.forEach((medication) => {
+          const item = document.createElement("article");
+          const header = document.createElement("div");
+          const details = document.createElement("div");
+          const title = document.createElement("div");
+          const symbol = document.createElement("span");
+          const nameWrap = document.createElement("span");
+          const name = document.createElement("strong");
+          const time = document.createElement("span");
+          const removeButton = document.createElement("button");
+          const takenButton = document.createElement("button");
+          const actions = document.createElement("div");
+          const taken = isMedicationTaken(medication.id);
+
+          item.className = "item";
+          header.className = "item-header";
+          title.className = "med-title";
+          symbol.className = "med-symbol";
+          symbol.textContent = "+";
+          name.textContent = medication.name;
+          time.className = "pill";
+          time.textContent = `Horario ${medication.time}`;
+          removeButton.className = "danger";
+          removeButton.type = "button";
+          removeButton.innerHTML = '<span class="action-icon" aria-hidden="true">x</span>Remover';
+          removeButton.addEventListener("click", () => removeMedication(medication));
+          takenButton.className = `taken-button ${taken ? "is-done" : ""}`;
+          takenButton.type = "button";
+          takenButton.textContent = taken ? "Tomado hoje" : "Marcar tomado";
+          takenButton.addEventListener("click", () => toggleTaken(medication.id));
+
+          nameWrap.appendChild(name);
+          title.append(symbol, nameWrap);
+          details.append(title, time);
+          actions.className = "item-actions";
+          actions.append(takenButton, removeButton);
+          header.append(details, actions);
+          item.appendChild(header);
+
+          const meta = document.createElement("div");
+          meta.className = "item-meta";
+
+          if (medication.dose) {
+            const dose = document.createElement("span");
+            dose.className = "pill pill-dose";
+            dose.textContent = `Dose ${medication.dose}`;
+            meta.appendChild(dose);
+          }
+
+          const sync = document.createElement("span");
+          sync.className = `pill ${taken ? "pill-done" : "pill-muted"}`;
+          sync.textContent = taken ? "Registrado hoje" : "Pendente hoje";
+          meta.appendChild(sync);
+
+          item.appendChild(meta);
+
+          if (!medication.dose) {
+            const doseHint = document.createElement("p");
+            doseHint.className = "item-note";
+            doseHint.textContent = "Dose nao informada.";
+            item.appendChild(doseHint);
+          }
+
+          if (medication.note) {
+            const note = document.createElement("div");
+            note.className = "item-note";
+            note.textContent = medication.note;
+            item.appendChild(note);
+          }
+
+          medicationList.appendChild(item);
+        });
+
+        updateStats();
+      }
+
+      function updateStats() {
+        const total = medications.length;
+        const sorted = [...medications].sort((a, b) => a.time.localeCompare(b.time));
+        const next = sorted[0];
+        const taken = medications.filter((item) => isMedicationTaken(item.id)).length;
+        const withDose = medications.filter((item) => item.dose).length;
+        const organizedPercent = total === 0 ? 0 : Math.round((withDose / total) * 100);
+        const period = periodInfo();
+        const morningCount = medications.filter((item) => item.time < "12:00").length;
+        const lunchCount = medications.filter((item) => item.time >= "12:00" && item.time < "18:00").length;
+        const nightCount = medications.filter((item) => item.time >= "18:00").length;
+        const pending = Math.max(total - taken, 0);
+        const periodSuffix = period.label;
+
+        periodMorning.textContent = `${morningCount * period.multiplier} ${morningCount === 1 && period.multiplier === 1 ? "medicamento" : "medicamentos"} ${periodSuffix}`;
+        periodLunch.textContent = `${lunchCount * period.multiplier} ${lunchCount === 1 && period.multiplier === 1 ? "medicamento" : "medicamentos"} ${periodSuffix}`;
+        periodNight.textContent = `${nightCount * period.multiplier} ${nightCount === 1 && period.multiplier === 1 ? "medicamento" : "medicamentos"} ${periodSuffix}`;
+        reportStats = { total, taken, pending };
+        nextMedicationName.textContent = next ? next.name : "Sem proximo remedio";
+        nextMedicationDetail.textContent = next
+          ? `${next.time}${next.dose ? ` - ${next.dose}` : ""}`
+          : "Cadastre um horario para acompanhar a proxima dose.";
+        interactionSummary.textContent = total > 1
+          ? "Revise combinacoes com um profissional de saude quando houver mais de um medicamento."
+          : "Nenhuma combinacao de risco identificada nos itens cadastrados.";
+        healthScore.textContent = `Medicamentos com dose definida: ${organizedPercent}%`;
+        scoreFill.style.width = `${organizedPercent}%`;
+        reportChartValues = [morningCount, lunchCount, nightCount, taken, pending];
+        updateReportRange();
+        renderTimeline(sorted);
+      }
+
+      function updateReportRange() {
+        const range = reportRangeInfo();
+        const projectedTotal = reportStats.total * range.multiplier;
+        const projectedTaken = reportStats.taken * range.multiplier;
+        const projectedPending = reportStats.pending * range.multiplier;
+
+        reportTotal.textContent = String(projectedTotal);
+        reportTaken.textContent = String(projectedTaken);
+        reportPending.textContent = String(projectedPending);
+        reportTotalLabel.textContent = `medicamentos ${range.label}`;
+        reportTakenLabel.textContent = `registrados ${range.label}`;
+        reportPendingLabel.textContent = `aguardando ${range.label}`;
+        updateReportChart(range);
+      }
+
+      function updateReportChart(range = reportRangeInfo()) {
+        const values = reportChartValues;
+        const max = Math.max(reportStats.total * range.multiplier, ...values, 1);
+        chartBars.forEach((bar, index) => {
+          const value = values[index] || 0;
+          bar.style.height = `${value ? Math.max(8, Math.round((value / max) * 100)) : 8}%`;
+          bar.style.opacity = value ? "1" : "0.42";
+        });
+      }
+
+      function renderTimeline(sortedMedications) {
+        timelineList.innerHTML = "";
+        const items = sortedMedications.slice(0, 4);
+        if (items.length === 0) {
+          timelineList.innerHTML = '<p class="empty">Nenhum horario cadastrado.</p>';
+          return;
+        }
+
+        items.forEach((medication) => {
+          const item = document.createElement("div");
+          const time = document.createElement("span");
+          const detail = document.createElement("span");
+          const name = document.createElement("span");
+          const dose = document.createElement("span");
+
+          item.className = "timeline-item";
+          time.className = "timeline-time";
+          detail.className = "timeline-detail";
+          name.className = "timeline-name";
+          dose.className = "timeline-dose";
+
+          time.textContent = medication.time;
+          name.textContent = medication.name;
+          dose.textContent = medication.dose || "Dose nao informada";
+
+          detail.append(name, dose);
+          item.append(time, detail);
+          timelineList.appendChild(item);
+        });
+      }
+
+      async function removeMedication(medication) {
+        try {
+          if (!usingLocalStorage) {
+            await requestJson(`${apiUrl}?id=${encodeURIComponent(medication.id)}`, {
+              method: "DELETE",
+            });
+          }
+
+          medications = medications.filter((saved) => saved.id !== medication.id);
+          saveLocalMedications();
+          renderMedications();
+          setStatus(medicationStatus, `${medication.name} removido da lista.`, "success");
+        } catch (error) {
+          setStatus(medicationStatus, error.message, "error");
+        }
+      }
+
+      logoutButton.addEventListener("click", () => {
+        localStorage.removeItem(storageKeys.token);
+        localStorage.removeItem(storageKeys.user);
+        currentUser = null;
+        authToken = "";
+        usingLocalStorage = false;
+        updateAuthUi();
+        renderLocked();
+        setMode("", "--");
+        window.location.replace("/login");
+      });
+
+      profileButton.addEventListener("click", () => {
+        const isOpen = profileMenu.classList.toggle("is-open");
+        profileButton.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!session.contains(event.target)) {
+          profileMenu.classList.remove("is-open");
+          profileButton.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      quickChips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          medicationTime.value = chip.dataset.time;
+          medicationName.focus();
+        });
+      });
+
+      viewTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          viewTabs.forEach((item) => item.classList.remove("is-active"));
+          tab.classList.add("is-active");
+          agendaPeriod = tab.dataset.period || "day";
+          updateStats();
+          renderMedications();
+        });
+      });
+
+      reportFilters.forEach((filter) => {
+        filter.addEventListener("click", () => {
+          reportFilters.forEach((item) => item.classList.remove("is-active"));
+          filter.classList.add("is-active");
+          updateReportRange();
+        });
+      });
+
+      navButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          navButtons.forEach((item) => item.classList.remove("is-active"));
+          appPages.forEach((page) => page.classList.remove("is-active"));
+          button.classList.add("is-active");
+          const page = document.querySelector(`#${button.dataset.page}`);
+          if (page) {
+            page.classList.add("is-active");
+          }
+        });
+      });
+
+      medicationForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!currentUser) {
+          setStatus(medicationStatus, "Faca login antes de adicionar medicamentos.", "error");
+          return;
+        }
+
+        const medication = {
+          id: crypto.randomUUID(),
+          name: medicationName.value.trim(),
+          time: medicationTime.value.trim(),
+          dose: medicationDose.value.trim(),
+          note: medicationNote.value.trim(),
+        };
+
+        if (!medication.name || !medication.time) {
+          setStatus(medicationStatus, "Nome e horario sao obrigatorios.", "error");
+          return;
+        }
+
+        try {
+          if (!usingLocalStorage) {
+            const data = await requestJson(apiUrl, {
+              method: "POST",
+              body: JSON.stringify(medication),
+            });
+            medications.push(data.medication);
+          } else {
+            medications.push(medication);
+            saveLocalMedications();
+          }
+
+          sortMedications();
+          renderMedications();
+          medicationForm.reset();
+          setStatus(medicationStatus, `${medication.name} agendado para ${medication.time}.`, "success");
+        } catch (error) {
+          setStatus(medicationStatus, error.message, "error");
+        }
+      });
+
+      clearMedications.addEventListener("click", async () => {
+        if (!currentUser) {
+          setStatus(medicationStatus, "Faca login para limpar sua lista.", "error");
+          return;
+        }
+
+        try {
+          if (!usingLocalStorage) {
+            await Promise.all(
+              medications.map((medication) =>
+                requestJson(`${apiUrl}?id=${encodeURIComponent(medication.id)}`, {
+                  method: "DELETE",
+                })
+              )
+            );
+          }
+
+          medications = [];
+          saveLocalMedications();
+          renderMedications();
+          setStatus(medicationStatus, "Lista limpa.", "success");
+        } catch (error) {
+          setStatus(medicationStatus, "Nao foi possivel limpar a lista.", "error");
+        }
+      });
+
+      medicationSearch.addEventListener("input", renderMedications);
+
+      cepInput.addEventListener("input", () => {
+        const digits = onlyDigits(cepInput.value).slice(0, 8);
+        cepInput.value = digits.replace(/^(\d{5})(\d{1,3})$/, "$1-$2");
+      });
+
+      cepPresets.forEach((preset) => {
+        preset.addEventListener("click", () => {
+          const digits = preset.dataset.cep;
+          cepInput.value = digits.replace(/^(\d{5})(\d{3})$/, "$1-$2");
+          cepInput.focus();
+        });
+      });
+
+      cepForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const cep = onlyDigits(cepInput.value);
+        if (cep.length !== 8) {
+          setStatus(cepStatus, "Informe um CEP com 8 digitos.", "error");
+          return;
+        }
+
+        setStatus(cepStatus, "Consultando API ViaCEP...", "");
+
+        try {
+          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+          if (!response.ok) {
+            throw new Error("Falha na consulta.");
+          }
+
+          const data = await response.json();
+          if (data.erro) {
+            throw new Error("CEP nao encontrado.");
+          }
+
+          addressResult.replaceChildren();
+
+          const street = document.createElement("strong");
+          const neighborhood = document.createElement("div");
+          const city = document.createElement("div");
+          const title = document.createElement("span");
+
+          title.className = "delivery-result-title";
+          title.textContent = "Endereco de reposicao";
+          street.textContent = data.logradouro || "Logradouro nao informado";
+          neighborhood.textContent = `Bairro: ${data.bairro || "Nao informado"}`;
+          city.textContent = `Cidade: ${data.localidade || "Nao informada"} - ${data.uf || ""}`;
+
+          addressResult.append(title, street, neighborhood, city);
+          setStatus(cepStatus, "Endereco validado para reposicao.", "success");
+        } catch (error) {
+          addressResult.innerHTML = '<span class="delivery-result-title">Endereco de reposicao</span>Nenhum endereco valido para exibir.';
+          setStatus(cepStatus, error.message, "error");
+        }
+      });
+
+      validateSession();
+    </script>
+  </body>
+</html>
