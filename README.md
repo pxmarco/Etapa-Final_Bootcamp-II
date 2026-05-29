@@ -1,11 +1,11 @@
-##MedSync
+# MedSync
 
 <p align="center">
   <strong>Organize a rotina dos seus medicamentos controlando horários, doses e observações. Encontre o endereço de entrega instantaneamente digitando o CEP.</strong>
 </p>
 
 <p align="center">
-  🌐 <strong>Acesse o sistema:</strong> <a href="https://medsync-main.vercel.app/app" target="_blank">medsync-main.vercel.app/app</a>
+  <strong>Acesse o sistema:</strong> <a href="https://medsync-main.vercel.app/app" target="_blank">medsync-main.vercel.app/app</a>
 </p>
 
 ---
