@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "docs/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/medications",
+      "dest": "/api/medications.py"
+    },
+    {
+      "src": "/api/auth/(.*)",
+      "dest": "/api/auth.py"
+    },
+    {
+      "src": "/login",
+      "dest": "/docs/login.html"
+    },
+    {
+      "src": "/cadastro",
+      "dest": "/docs/cadastro.html"
+    },
+    {
+      "src": "/app",
+      "dest": "/docs/app.html"
+    },
+    {
+      "src": "/",
+      "dest": "/docs/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/docs/app.html"
+    }
+  ]
+}

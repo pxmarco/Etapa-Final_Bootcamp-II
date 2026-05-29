@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | MedSync</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230f766e'/%3E%3Crect x='14' y='27' width='36' height='10' rx='5' fill='white'/%3E%3Crect x='27' y='14' width='10' height='36' rx='5' fill='white'/%3E%3C/svg%3E">
+    <style>
+      :root {
+        --ink: #17202a;
+        --muted: #64748b;
+        --line: #d8e1ea;
+        --blue: #2563eb;
+        --teal: #0f766e;
+        --rose: #e11d48;
+        --amber: #f59e0b;
+        --green: #16a34a;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--ink);
+        background: #f5f8fc;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(circle at 18% 18%, rgba(245, 158, 11, 0.34), transparent 28%),
+          radial-gradient(circle at 78% 20%, rgba(225, 29, 72, 0.28), transparent 25%),
+          linear-gradient(135deg, #0f766e 0%, #2563eb 58%, #7c3aed 100%);
+      }
+
+      .page {
+        display: grid;
+        min-height: 100vh;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+        gap: 28px;
+        align-items: center;
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 28px 20px;
+      }
+
+      .showcase {
+        color: #ffffff;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 900;
+      }
+
+      .mark {
+        display: grid;
+        width: 52px;
+        height: 52px;
+        place-items: center;
+        border-radius: 8px;
+        background: #ffffff;
+        color: var(--teal);
+        box-shadow: 0 18px 38px rgba(15, 23, 42, 0.2);
+      }
+
+      h1 {
+        max-width: 690px;
+        margin: 34px 0 16px;
+        font-size: clamp(42px, 7vw, 82px);
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .showcase p {
+        max-width: 630px;
+        margin: 0;
+        color: #ecfeff;
+        font-size: 18px;
+        line-height: 1.55;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        max-width: 650px;
+        margin-top: 28px;
+      }
+
+      .feature {
+        min-height: 96px;
+        border: 1px solid rgba(255, 255, 255, 0.34);
+        border-radius: 8px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(14px);
+      }
+
+      .feature strong {
+        display: block;
+        font-size: 24px;
+      }
+
+      .feature span {
+        color: #eefcff;
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .card {
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: 8px;
+        padding: 26px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+      }
+
+      .trust-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 18px 0 22px;
+      }
+
+      .trust {
+        border-radius: 8px;
+        padding: 10px;
+        background: #f1f5f9;
+        color: #334155;
+        font-size: 12px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .card-head {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 31px;
+      }
+
+      .card p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .badge {
+        border-radius: 999px;
+        padding: 7px 11px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 7px;
+        color: #334155;
+        font-weight: 900;
+      }
+
+      .field {
+        margin-bottom: 15px;
+      }
+
+      .input-wrap {
+        display: flex;
+        align-items: center;
+        border: 1px solid #b8c7ce;
+        border-radius: 8px;
+        background: #ffffff;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .input-wrap:focus-within {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16);
+      }
+
+      .icon {
+        width: 44px;
+        color: var(--blue);
+        text-align: center;
+        font-weight: 900;
+      }
+
+      input {
+        width: 100%;
+        min-height: 48px;
+        border: 0;
+        padding: 10px 12px 10px 0;
+        background: transparent;
+        color: var(--ink);
+        font: inherit;
+      }
+
+      input:focus {
+        outline: 0;
+      }
+
+      .ghost {
+        min-width: 74px;
+        border: 0;
+        background: transparent;
+        color: var(--blue);
+        cursor: pointer;
+        font-weight: 900;
+      }
+
+      button,
+      a.button {
+        display: inline-flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 8px;
+        padding: 11px 15px;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 900;
+        text-decoration: none;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+      }
+
+      button:hover,
+      a.button:hover {
+        transform: translateY(-1px);
+      }
+
+      button:disabled {
+        cursor: wait;
+        opacity: 0.72;
+        transform: none;
+      }
+
+      .primary {
+        width: 100%;
+        background: var(--blue);
+        color: #ffffff;
+        box-shadow: 0 13px 24px rgba(37, 99, 235, 0.24);
+      }
+
+      .secondary {
+        width: 100%;
+        margin-top: 10px;
+        background: #e8eef5;
+        color: #12323a;
+      }
+
+      .status {
+        min-height: 26px;
+        margin-top: 14px;
+        color: var(--muted);
+        font-weight: 900;
+        line-height: 1.45;
+      }
+
+      .error {
+        color: var(--rose);
+      }
+
+      .success {
+        color: var(--green);
+      }
+
+      @media (max-width: 900px) {
+        .page {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .page {
+          padding: 18px 14px;
+        }
+
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .trust-row {
+          grid-template-columns: 1fr;
+        }
+
+        .card-head {
+          display: block;
+        }
+
+        .badge {
+          display: inline-flex;
+          margin-top: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="showcase" aria-label="MedSync">
+        <div class="brand">
+          <span class="mark" aria-hidden="true">+</span>
+          <span>MedSync</span>
+        </div>
+        <h1>Seu cuidado comecando pelo login.</h1>
+        <p>Entre para abrir o aplicativo, carregar seus medicamentos e continuar sua rotina com tudo separado por usuario.</p>
+        <div class="feature-grid" aria-label="Recursos do aplicativo">
+          <div class="feature">
+            <strong>Conta</strong>
+            <span>Acesso individual com sessao segura.</span>
+          </div>
+          <div class="feature">
+            <strong>Agenda</strong>
+            <span>Horarios, doses e observacoes salvos.</span>
+          </div>
+          <div class="feature">
+            <strong>CEP</strong>
+            <span>Consulta de entrega integrada.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="login-title">
+        <div class="card-head">
+          <div>
+            <h2 id="login-title">Login</h2>
+            <p>Acesse sua conta para entrar no aplicativo.</p>
+          </div>
+          <span class="badge">Seguro</span>
+        </div>
+        <div class="trust-row" aria-label="Beneficios da conta">
+          <span class="trust">Agenda pessoal</span>
+          <span class="trust">Registro diario</span>
+          <span class="trust">Rotina privada</span>
+        </div>
+        <form id="login-form">
+          <div class="field">
+            <label for="email">Email</label>
+            <div class="input-wrap">
+              <span class="icon" aria-hidden="true">@</span>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="password">Senha</label>
+            <div class="input-wrap">
+              <span class="icon" aria-hidden="true">*</span>
+              <input id="password" name="password" type="password" autocomplete="current-password" minlength="8" placeholder="Sua senha" required>
+              <button class="ghost" id="toggle-password" type="button">Mostrar</button>
+            </div>
+          </div>
+          <button class="primary" type="submit">Entrar no aplicativo</button>
+          <a class="button secondary" href="/cadastro">Criar uma nova conta</a>
+        </form>
+        <div class="status" id="status" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <script>
+      const form = document.querySelector("#login-form");
+      const statusElement = document.querySelector("#status");
+      const passwordInput = document.querySelector("#password");
+      const togglePassword = document.querySelector("#toggle-password");
+
+      function setStatus(message, type = "") {
+        statusElement.textContent = message;
+        statusElement.className = `status ${type}`;
+      }
+
+      async function requestJson(url, options = {}) {
+        const response = await fetch(url, {
+          headers: { "Content-Type": "application/json" },
+          ...options,
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Nao foi possivel fazer login.");
+        }
+        return data;
+      }
+
+      togglePassword.addEventListener("click", () => {
+        const showing = passwordInput.type === "text";
+        passwordInput.type = showing ? "password" : "text";
+        togglePassword.textContent = showing ? "Mostrar" : "Ocultar";
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const button = form.querySelector(".primary");
+        button.disabled = true;
+        setStatus("Entrando na sua conta...");
+
+        try {
+          const data = await requestJson("/api/auth/login", {
+            method: "POST",
+            body: JSON.stringify({
+              email: form.elements.email.value,
+              password: form.elements.password.value,
+            }),
+          });
+          localStorage.setItem("medsync-token", data.token);
+          localStorage.setItem("medsync-user", JSON.stringify(data.user));
+          setStatus("Login realizado. Abrindo aplicativo...", "success");
+          window.location.replace("/app");
+        } catch (error) {
+          setStatus(error.message, "error");
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
