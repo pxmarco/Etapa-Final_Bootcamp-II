@@ -1,7 +1,6 @@
 # MedSync
-![CI](https://medsync-main.vercel.app/app)
 
-Deploy: https://hebermacedo.github.io/medsync/
+Deploy: https://medsync-main.vercel.app/app
 
 Este é o projeto para Etapa Final da disciplina BootCamp. A ideia do MedSync é ajudar no controle de remédios, principalmente para quem toma vários medicamentos no dia, previnindo o esquecimento de algum horário e/ou dose.
 
