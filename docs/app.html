@@ -2121,6 +2121,7 @@
       const cepInput = document.querySelector("#cep");
       const cepStatus = document.querySelector("#cep-status");
       const addressResult = document.querySelector("#address-result");
+      let selectedAddress = { cep: "", logradouro: "", cidade: "", uf: "" };
       const nextMedicationName = document.querySelector("#next-medication-name");
       const nextMedicationDetail = document.querySelector("#next-medication-detail");
       const timelineList = document.querySelector("#timeline-list");
@@ -2450,6 +2451,19 @@
             item.appendChild(note);
           }
 
+          if (medication.cep || medication.logradouro || medication.cidade || medication.uf) {
+            const address = document.createElement("div");
+            address.className = "item-address";
+            const parts = [
+              medication.cep ? medication.cep : null,
+              medication.logradouro ? medication.logradouro : null,
+              medication.cidade ? medication.cidade : null,
+              medication.uf ? medication.uf : null,
+            ].filter(Boolean);
+            address.textContent = `Endereço: ${parts.join(", ")}`;
+            item.appendChild(address);
+          }
+
           medicationList.appendChild(item);
         });
 
@@ -2636,6 +2650,10 @@
           time: medicationTime.value.trim(),
           dose: medicationDose.value.trim(),
           note: medicationNote.value.trim(),
+          cep: selectedAddress.cep,
+          logradouro: selectedAddress.logradouro,
+          cidade: selectedAddress.cidade,
+          uf: selectedAddress.uf,
         };
 
         if (!medication.name || !medication.time) {
@@ -2695,6 +2713,7 @@
       cepInput.addEventListener("input", () => {
         const digits = onlyDigits(cepInput.value).slice(0, 8);
         cepInput.value = digits.replace(/^(\d{5})(\d{1,3})$/, "$1-$2");
+        selectedAddress = { cep: "", logradouro: "", cidade: "", uf: "" };
       });
 
       cepPresets.forEach((preset) => {
@@ -2727,6 +2746,13 @@
             throw new Error("CEP não encontrado.");
           }
 
+          selectedAddress = {
+            cep,
+            logradouro: data.logradouro || "",
+            cidade: data.localidade || "",
+            uf: data.uf || "",
+          };
+
           addressResult.replaceChildren();
 
           const street = document.createElement("strong");
@@ -2743,6 +2769,7 @@
           addressResult.append(title, street, neighborhood, city);
           setStatus(cepStatus, "Endereço validado para reposição.", "success");
         } catch (error) {
+          selectedAddress = { cep: "", logradouro: "", cidade: "", uf: "" };
           addressResult.innerHTML = '<span class="delivery-result-title">Endereco de reposição</span>Nenhum endereço válido para exibir.';
           setStatus(cepStatus, error.message, "error");
         }

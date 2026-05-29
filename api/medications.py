@@ -41,11 +41,19 @@ def _ensure_table(cursor):
             time TEXT NOT NULL,
             dose TEXT NOT NULL DEFAULT '',
             note TEXT NOT NULL DEFAULT '',
+            cep TEXT NOT NULL DEFAULT '',
+            logradouro TEXT NOT NULL DEFAULT '',
+            cidade TEXT NOT NULL DEFAULT '',
+            uf TEXT NOT NULL DEFAULT '',
             created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         )
         """
     )
     cursor.execute("ALTER TABLE medications ADD COLUMN IF NOT EXISTS user_id UUID")
+    cursor.execute("ALTER TABLE medications ADD COLUMN IF NOT EXISTS cep TEXT NOT NULL DEFAULT ''")
+    cursor.execute("ALTER TABLE medications ADD COLUMN IF NOT EXISTS logradouro TEXT NOT NULL DEFAULT ''")
+    cursor.execute("ALTER TABLE medications ADD COLUMN IF NOT EXISTS cidade TEXT NOT NULL DEFAULT ''")
+    cursor.execute("ALTER TABLE medications ADD COLUMN IF NOT EXISTS uf TEXT NOT NULL DEFAULT ''")
     cursor.execute(
         """
         DO $$
@@ -77,7 +85,7 @@ def _list_medications(user_id):
             _ensure_table(cursor)
             cursor.execute(
                 """
-                SELECT id::text, name, time, dose, note
+                SELECT id::text, name, time, dose, note, cep, logradouro, cidade, uf
                 FROM medications
                 WHERE user_id = %s
                 ORDER BY time, created_at
@@ -92,6 +100,10 @@ def _create_medication(payload, user_id):
     time = str(payload.get("time", "")).strip()
     dose = str(payload.get("dose", "")).strip()
     note = str(payload.get("note", "")).strip()
+    cep = str(payload.get("cep", "")).strip()
+    logradouro = str(payload.get("logradouro", "")).strip()
+    cidade = str(payload.get("cidade", "")).strip()
+    uf = str(payload.get("uf", "")).strip()
 
     if not name or not time:
         raise ValueError("Nome e horario sao obrigatorios.")
@@ -103,6 +115,10 @@ def _create_medication(payload, user_id):
         "time": time,
         "dose": dose,
         "note": note,
+        "cep": cep,
+        "logradouro": logradouro,
+        "cidade": cidade,
+        "uf": uf,
     }
 
     with _connect() as connection:
@@ -110,8 +126,8 @@ def _create_medication(payload, user_id):
             _ensure_table(cursor)
             cursor.execute(
                 """
-                INSERT INTO medications (id, user_id, name, time, dose, note)
-                VALUES (%(id)s, %(user_id)s, %(name)s, %(time)s, %(dose)s, %(note)s)
+                INSERT INTO medications (id, user_id, name, time, dose, note, cep, logradouro, cidade, uf)
+                VALUES (%(id)s, %(user_id)s, %(name)s, %(time)s, %(dose)s, %(note)s, %(cep)s, %(logradouro)s, %(cidade)s, %(uf)s)
                 """,
                 medication,
             )
